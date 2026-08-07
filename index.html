@@ -51,6 +51,14 @@
         li {
             margin-bottom: 0.3em;
         }
+        .projects li {
+            margin-bottom: 1rem;
+        }
+
+        .projects{
+            font-size: 0.9em;
+            color: #b8b8b8;
+        }
 
         @media (min-width: 600px) {
             body {
@@ -75,23 +83,27 @@
 <body>
 <header>
     <h1>Yashwanth</h1>
-    <p>Student | Systems Enthusiast</p>
+    <p>Studying Computer Science</p>
 </header>
 
 <section>
-    <h2>About Me</h2>
-    <p>Hello! I’m Yashwanth. I am an undergraduate student studying computer science. <br>
-        I work on software systems, simulations, ml. <br>
+    <p>
+        I'm interested in software engineering, computer systems, and machine learning <br>
     </p>
 </section>
 
-<section>
+<section class="projects">
     <h2>Projects</h2>
     <ul>
-        <li><a href="https://yashwk.github.io/StrikeCEM/" target="_blank">StrikeCEM (in development)</a></li>
-        <li><a href="https://github.com/yashwk/StrikeEngine" target="_blank">StrikeEngine (in development)</a></li>
-        <li><a href="https://github.com/yashwk/renamer" target="_blank">renamer (in development)</a></li>
-        <li><a href="https://github.com/yashwk/libxtm" target="_blank">libxtm</a></li>
+        <li><a href="https://github.com/yashwk/StrikeEngine" target="_blank">StrikeEngine</a><br>
+            <span class="description">A modular aerospace simulation engine</span>
+        </li>
+        <li><a href="https://yashwk.github.io/StrikeCEM/" target="_blank">StrikeCEM</a><br>
+            <span class="description">Radar Cross Section (RCS) simulation using Physical Optics</span>
+        </li>
+        <li><a href="https://github.com/yashwk/libxtm" target="_blank">libxtm</a><br>
+            <span class="description">Extreme terrain compression library</span>
+        </li>
     </ul>
 </section>
 
