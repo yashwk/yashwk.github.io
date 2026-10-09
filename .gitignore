@@ -1,4 +1,17 @@
-.idea
+# Build & dependencies
+dist/
+.astro/
+node_modules/
+
+# Environment & IDE
+.env
+.env.production
+.idea/
 *.iml
-out
-gen
+out/
+gen/
+.DS_Store
+
+# Local developer notes
+DEVELOPMENT.md
+DEV.md

@@ -1,0 +1,39 @@
+---
+import '../styles/global.css';
+import 'katex/dist/katex.min.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Yashwanth",
+  description = "Studying Computer Science. Interested in software engineering, computer systems, and machine learning."
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
+    <title>{title === "Yashwanth" ? title : `${title} | Yashwanth`}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:type" content="website" />
+  </head>
+  <body>
+    <slot />
+    <footer>
+      <p>© {new Date().getFullYear()} Yashwanth · <a href="/rss.xml">rss</a></p>
+    </footer>
+  </body>
+</html>

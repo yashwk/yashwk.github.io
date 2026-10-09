@@ -1,0 +1,29 @@
+{
+  "projects": [
+    {
+      "name": "StrikeEngine",
+      "description": "A modular aerospace simulation engine designed for flexible dynamics modeling and extensible flight systems.",
+      "tags": ["C++", "Aerospace", "Simulation", "Architecture"],
+      "links": [
+        { "label": "Code", "url": "https://github.com/yashwk/StrikeEngine" }
+      ]
+    },
+    {
+      "name": "StrikeCEM",
+      "description": "Radar Cross Section (RCS) simulation using high-frequency Physical Optics approximation for surface current integration.",
+      "tags": ["Computational Electromagnetics", "Physical Optics", "RCS", "C++"],
+      "links": [
+        { "label": "Demo", "url": "https://yashwk.github.io/StrikeCEM/" },
+        { "label": "GitHub", "url": "https://github.com/yashwk" }
+      ]
+    },
+    {
+      "name": "libxtm",
+      "description": "Extreme terrain compression library optimized for low-latency streaming and high-density elevation grids.",
+      "tags": ["Data Compression", "Terrain", "Algorithms", "C/C++"],
+      "links": [
+        { "label": "Code", "url": "https://github.com/yashwk/libxtm" }
+      ]
+    }
+  ]
+}

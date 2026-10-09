@@ -1,0 +1,49 @@
+backend:
+  name: github
+  repo: yashwk/yashwk.github.io
+  branch: main
+
+media_folder: "public/assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - name: "blog"
+    label: "Blog Posts"
+    label_singular: "Blog Post"
+    folder: "src/content/blog"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    format: "frontmatter"
+    editor:
+      preview: true
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Publish Date", name: "pubDate", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Tags", name: "tags", widget: "list", default: [] }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "projects_section"
+    label: "Projects"
+    files:
+      - name: "projects_file"
+        label: "Manage Projects"
+        file: "src/data/projects.json"
+        format: "json"
+        fields:
+          - name: "projects"
+            label: "Projects List"
+            widget: "list"
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "Project Name", name: "name", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Tags", name: "tags", widget: "list", default: [] }
+              - label: "Links"
+                name: "links"
+                widget: "list"
+                summary: "{{fields.label}}: {{fields.url}}"
+                fields:
+                  - { label: "Label", name: "label", widget: "string", default: "Code" }
+                  - { label: "URL", name: "url", widget: "string" }

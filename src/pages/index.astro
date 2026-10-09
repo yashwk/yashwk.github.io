@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
+);
+
+import projectsData from '../data/projects.json';
+
+const projects = projectsData.projects;
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+}
+---
+
+<BaseLayout>
+  <header>
+    <h1>Yashwanth</h1>
+    <p class="subtitle">Studying Computer Science</p>
+  </header>
+
+  <section>
+    <p class="intro-text">
+      I'm interested in software engineering, computer systems, and machine learning.
+    </p>
+  </section>
+
+  <section class="projects">
+    <h2>Projects</h2>
+    <div class="projects-grid">
+      {projects.map((project) => (
+        <article class="project-card">
+          <div class="project-header">
+            <h3 class="project-title">{project.name}</h3>
+            <div class="project-links">
+              {project.links.map((link) => (
+                <a href={link.url} target="_blank" rel="noopener noreferrer">
+                  {link.label} &rarr;
+                </a>
+              ))}
+            </div>
+          </div>
+          <p class="project-desc">{project.description}</p>
+          <ul class="tags-list">
+            {project.tags.map((tag) => (
+              <li class="tag">{tag}</li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  {sortedPosts.length > 0 && (
+    <section class="writing">
+      <h2>Writing</h2>
+      <ul class="posts-list">
+        {sortedPosts.map((post) => (
+          <li class="post-item">
+            <div class="post-top">
+              <a href={`/blog/${post.id}/`} class="post-title-link">
+                {post.data.title}
+              </a>
+              <time datetime={post.data.pubDate.toISOString()} class="post-date">
+                {formatDate(post.data.pubDate)}
+              </time>
+            </div>
+            <p class="post-summary">{post.data.description}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <section class="contact">
+    <h2>Contact</h2>
+    <ul class="contact-list">
+      <li class="contact-row">
+        <span>Email: <a href="mailto:yashwk@proton.me">yashwk@proton.me</a></span>
+        <button class="copy-btn" id="copy-email-btn" type="button" aria-label="Copy email address" data-email="yashwk@proton.me">
+          copy
+        </button>
+      </li>
+      <li class="contact-row">
+        <span>GitHub: <a href="https://github.com/yashwk" target="_blank" rel="noopener noreferrer">github.com/yashwk</a></span>
+      </li>
+    </ul>
+  </section>
+
+  <script>
+    const copyBtn = document.getElementById('copy-email-btn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        const email = copyBtn.getAttribute('data-email');
+        if (email) {
+          try {
+            await navigator.clipboard.writeText(email);
+            copyBtn.textContent = 'copied!';
+            copyBtn.classList.add('copied');
+            setTimeout(() => {
+              copyBtn.textContent = 'copy';
+              copyBtn.classList.remove('copied');
+            }, 2000);
+          } catch (e) {
+            console.error('Failed to copy', e);
+          }
+        }
+      });
+    }
+  </script>
+</BaseLayout>
