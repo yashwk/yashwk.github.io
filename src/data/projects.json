@@ -3,8 +3,8 @@
     {
       "name": "StrikeEngine",
       "icon": "/icons/strikeengine.svg",
-      "description": "A modular aerospace simulation engine designed for flexible dynamics modeling and extensible flight systems.",
-      "tags": ["C++", "Aerospace", "Simulation", "Architecture"],
+      "description": "A high-performance C++20 flight physics engine simulating 6-DOF aircraft, rocket, and atmospheric dynamics at 50,000+ steps/sec with zero heap allocations.",
+      "tags": ["C++20", "Flight Dynamics", "Aerospace Simulation", "RK4"],
       "links": [
         { "label": "GitHub", "url": "https://github.com/yashwk/StrikeEngine" }
       ]
@@ -12,8 +12,8 @@
     {
       "name": "StrikeCEM",
       "icon": "/icons/strikecem.svg",
-      "description": "Radar Cross Section (RCS) simulation using high-frequency Physical Optics approximation for surface current integration.",
-      "tags": ["Computational Electromagnetics", "Physical Optics", "RCS", "C++"],
+      "description": "A high-speed radar signature simulator calculating stealth aircraft visibility (Radar Cross Section) in real time using Physical Optics and analytical Gordon integration.",
+      "tags": ["Computational Electromagnetics", "Radar Cross Section", "Physical Optics", "C++20"],
       "links": [
         { "label": "GitHub", "url": "https://github.com/yashwk/StrikeCEM" }
       ]
@@ -21,8 +21,8 @@
     {
       "name": "libxtm",
       "icon": "/icons/libxtm.svg",
-      "description": "Extreme terrain compression library optimized for low-latency streaming and high-density elevation grids.",
-      "tags": ["Data Compression", "Terrain", "Algorithms", "C/C++"],
+      "description": "An extreme 3D terrain elevation compression library for flight simulators, shrinking planetary heightmaps by up to 12:1 with sub-millisecond SIMD decoding.",
+      "tags": ["Terrain Compression", "SIMD", "Geospatial", "C/C++"],
       "links": [
         { "label": "GitHub", "url": "https://github.com/yashwk/libxtm" }
       ]

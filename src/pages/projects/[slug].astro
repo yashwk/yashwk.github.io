@@ -20,7 +20,7 @@ const otherProjects = Object.values(projectsDetail).filter((p) => p.slug !== pro
 ---
 
 <BaseLayout
-  title={`${project.name} - Technical Architecture`}
+  title={`${project.name} - Technical Overview`}
   description={project.tagline}
   image={`/og/project-${project.slug}.png`}
   showProgress={true}
@@ -50,14 +50,14 @@ const otherProjects = Object.values(projectsDetail).filter((p) => p.slug !== pro
         </a>
         {project.blogSlug && (
           <a href={`/blog/${project.blogSlug}/`} class="btn-secondary">
-            Read Technical Article &rarr;
+            Read Deep-Dive Article &rarr;
           </a>
         )}
       </div>
     </div>
   </header>
 
-  <section style="margin-bottom: 2rem;">
+  <section style="margin-bottom: 2.5rem;">
     <div class="spec-grid">
       {Object.entries(project.metrics).map(([label, value]) => (
         <div class="spec-card">
@@ -69,10 +69,34 @@ const otherProjects = Object.values(projectsDetail).filter((p) => p.slug !== pro
   </section>
 
   <article class="prose">
-    <h2>Project Overview</h2>
-    {project.overview.split('\n\n').map((paragraph) => (
+    <h2>What is {project.name}?</h2>
+    {project.plainEnglishSummary.map((paragraph) => (
       <p>{paragraph}</p>
     ))}
+
+    <h2>The Problem: Why is this challenging?</h2>
+    <p>{project.theProblem.lead}</p>
+    <div class="problem-points">
+      {project.theProblem.points.map((point) => (
+        <div class="problem-point-card">
+          <strong>{point.title}</strong>
+          <p>{point.desc}</p>
+        </div>
+      ))}
+    </div>
+
+    <h2>How It Works: Step-by-Step Pipeline</h2>
+    <ol class="project-pipeline-list">
+      {project.howItWorks.map((item) => (
+        <li class="pipeline-step-item">
+          <span class="pipeline-step-num">{item.step}</span>
+          <div class="pipeline-step-content">
+            <strong>{item.title}</strong>
+            <p>{item.description}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
 
     <h2>System Architecture & Data Flow</h2>
     <p>
@@ -80,14 +104,12 @@ const otherProjects = Object.values(projectsDetail).filter((p) => p.slug !== pro
     </p>
     <pre class="architecture-diagram"><code>{project.architectureDiagram}</code></pre>
 
-    <h2>Key Technical Capabilities</h2>
-    <ul style="list-style: none; padding-left: 0; display: flex; flex-direction: column; gap: 1rem;">
+    <h2>Key Technical Innovations</h2>
+    <ul class="key-features-list">
       {project.keyFeatures.map((feat) => (
-        <li style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem;">
-          <strong style="color: var(--accent); display: block; font-size: 1rem; margin-bottom: 0.35rem;">
-            {feat.title}
-          </strong>
-          <span style="color: var(--text); line-height: 1.6;">{feat.desc}</span>
+        <li class="key-feature-card">
+          <strong>{feat.title}</strong>
+          <span>{feat.desc}</span>
         </li>
       ))}
     </ul>
@@ -95,13 +117,16 @@ const otherProjects = Object.values(projectsDetail).filter((p) => p.slug !== pro
     {project.mathematicalFoundations && (
       <>
         <h2>Mathematical Foundations</h2>
-        <ul style="list-style: none; padding-left: 0; display: flex; flex-direction: column; gap: 0.75rem;">
+        <p>The core physical laws and numerical methods formulated for computational efficiency:</p>
+        <div class="math-foundations-list">
           {project.mathematicalFoundations.map((math) => (
-            <li style="background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem 1rem; font-family: var(--font-mono); font-size: 0.88rem; color: #f08d49;">
-              {math}
-            </li>
+            <div class="math-foundation-card">
+              <div class="math-foundation-title">{math.title}</div>
+              <pre class="math-foundation-formula"><code>{math.formula}</code></pre>
+              <p class="math-foundation-desc">{math.explanation}</p>
+            </div>
           ))}
-        </ul>
+        </div>
       </>
     )}
 
