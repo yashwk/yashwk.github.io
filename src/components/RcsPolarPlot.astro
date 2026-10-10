@@ -565,6 +565,22 @@
     drawScope();
   }
 
+  function stopSweep() {
+    if (sweepInterval) {
+      clearInterval(sweepInterval);
+      sweepInterval = null;
+      isSweeping = false;
+      const sweepBtn = document.getElementById('rcs-sweep-btn');
+      if (sweepBtn) sweepBtn.innerText = '▶ Auto Sweep 360°';
+    }
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopSweep();
+  });
+
+  document.addEventListener('astro:before-swap', stopSweep);
+
   document.addEventListener('astro:page-load', () => {
     init();
   });

@@ -6,6 +6,9 @@ import RcsPolarPlot from '../../components/RcsPolarPlot.astro';
 import TerrainCompressionSandbox from '../../components/TerrainCompressionSandbox.astro';
 import MoETierSimulator from '../../components/MoETierSimulator.astro';
 
+// Master toggle: set to false to completely disable all interactive demos across the site
+const SHOW_INTERACTIVE_DEMOS = true;
+
 export async function getStaticPaths() {
   const allProjects = await getCollection('projects');
   return allProjects.map((project) => ({
@@ -67,52 +70,76 @@ const otherProjects = allProjects.filter((p) => p.id !== project.id);
     </div>
   </header>
 
-  {project.id === 'strikeengine' && (
-    <section style="margin: 2rem 0 2.5rem 0;">
-      <h2 style="font-size: 1.15rem; color: #ffffff; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-        <span>Interactive Live Terminal Cockpit (<code>strike monitor</code>)</span>
-      </h2>
-      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-        Live simulation telemetry ticking in real time for an 80 km head-on BVR engagement (Astra MK2 vs. Su-30 Flanker):
-      </p>
-      <TerminalCockpit />
-    </section>
-  )}
+  {SHOW_INTERACTIVE_DEMOS && (
+    <>
+      {project.id === 'strikeengine' && (
+        <details class="project-demo-drawer" open>
+          <summary class="demo-drawer-summary">
+            <span class="demo-summary-left">
+              <span>⚡ Live Simulation Telemetry Cockpit (<code>strike monitor</code>)</span>
+            </span>
+            <span class="demo-badge">Click to Toggle</span>
+          </summary>
+          <div class="demo-drawer-content">
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 0.75rem;">
+              Real-time flight kinematics and guidance telemetry for an 80 km head-on BVR engagement (Astra MK2 vs. Su-30 Flanker):
+            </p>
+            <TerminalCockpit />
+          </div>
+        </details>
+      )}
 
-  {project.id === 'strikecem' && (
-    <section style="margin: 2rem 0 2.5rem 0;">
-      <h2 style="font-size: 1.15rem; color: #ffffff; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-        <span>Interactive 360° Polar RCS Scope</span>
-      </h2>
-      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-        Live asymptotic Physical Optics (PO) and Physical Theory of Diffraction (PTD) fringe wave RCS simulator. Toggle targets, sweep azimuth angles, and inspect polarization response:
-      </p>
-      <RcsPolarPlot />
-    </section>
-  )}
+      {project.id === 'strikecem' && (
+        <details class="project-demo-drawer" open>
+          <summary class="demo-drawer-summary">
+            <span class="demo-summary-left">
+              <span>⚡ Live 360° Polar Radar Cross Section (RCS) Scope</span>
+            </span>
+            <span class="demo-badge">Click to Toggle</span>
+          </summary>
+          <div class="demo-drawer-content">
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 0.75rem;">
+              Asymptotic Physical Optics (PO) + Physical Theory of Diffraction (PTD) fringe wave RCS simulator. Toggle targets, sweep azimuth angles, and inspect polarization response:
+            </p>
+            <RcsPolarPlot />
+          </div>
+        </details>
+      )}
 
-  {project.id === 'libxtm' && (
-    <section style="margin: 2rem 0 2.5rem 0;">
-      <h2 style="font-size: 1.15rem; color: #ffffff; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-        <span>Interactive DEM Compression & Predictor Sandbox</span>
-      </h2>
-      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-        Live testbench evaluating the 6 deterministic spatial predictors on 32×32 terrain tiles. Toggle quadtree subdivision, split-precision planes, and inspect residual Shannon entropy:
-      </p>
-      <TerrainCompressionSandbox />
-    </section>
-  )}
+      {project.id === 'libxtm' && (
+        <details class="project-demo-drawer" open>
+          <summary class="demo-drawer-summary">
+            <span class="demo-summary-left">
+              <span>⚡ Live DEM Terrain Compression & Predictor Sandbox</span>
+            </span>
+            <span class="demo-badge">Click to Toggle</span>
+          </summary>
+          <div class="demo-drawer-content">
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 0.75rem;">
+              Evaluating the 6 deterministic spatial predictors on 32×32 terrain tiles. Toggle quadtree subdivision, split-precision planes, and inspect residual Shannon entropy:
+            </p>
+            <TerrainCompressionSandbox />
+          </div>
+        </details>
+      )}
 
-  {project.id === 'mosaic' && (
-    <section style="margin: 2rem 0 2.5rem 0;">
-      <h2 style="font-size: 1.15rem; color: #ffffff; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-        <span>Interactive MoE Tiered Memory Simulator</span>
-      </h2>
-      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-        Live simulation of Qwen3.6-35B inference across NVMe disk, Linux page cache, C++ AVX2 SIMD executor, and GPU VRAM LRU cache:
-      </p>
-      <MoETierSimulator />
-    </section>
+      {project.id === 'mosaic' && (
+        <details class="project-demo-drawer" open>
+          <summary class="demo-drawer-summary">
+            <span class="demo-summary-left">
+              <span>⚡ Live MoE Tiered Memory Hierarchy Simulator</span>
+            </span>
+            <span class="demo-badge">Click to Toggle</span>
+          </summary>
+          <div class="demo-drawer-content">
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 0.75rem;">
+              Simulating Qwen3.6-35B inference across NVMe disk, Linux page cache, C++ AVX2 SIMD executor, and GPU VRAM LRU cache:
+            </p>
+            <MoETierSimulator />
+          </div>
+        </details>
+      )}
+    </>
   )}
 
   <article class="prose project-prose">

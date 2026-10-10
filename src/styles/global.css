@@ -652,6 +652,65 @@ h2::before {
   text-decoration: underline;
 }
 
+/* Interactive Demo Drawer */
+.project-demo-drawer {
+  margin: 1.75rem 0 2.5rem 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(18, 22, 28, 0.7);
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-demo-drawer[open] {
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+}
+
+.demo-drawer-summary {
+  padding: 0.7rem 1rem;
+  background: #161b22;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: #ffffff;
+  font-weight: 600;
+  list-style: none;
+  transition: background 0.15s ease;
+}
+
+.demo-drawer-summary:hover {
+  background: #1c2128;
+}
+
+.demo-drawer-summary::-webkit-details-marker {
+  display: none;
+}
+
+.demo-summary-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.demo-badge {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--accent);
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+}
+
+.demo-drawer-content {
+  padding: 1rem 1rem 0.5rem;
+}
+
 @media (max-width: 600px) {
   .project-detail-hero {
     flex-direction: column;

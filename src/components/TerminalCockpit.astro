@@ -320,10 +320,24 @@ ${asciiPlot}└─────────────────────�
 
   function start() {
     if (timerId) clearInterval(timerId);
-    timerId = setInterval(updateFrame, 50);
+    if (isRunning) {
+      timerId = setInterval(updateFrame, 50);
+    }
+  }
+
+  function stop() {
+    if (timerId) {
+      clearInterval(timerId);
+      timerId = null;
+    }
   }
 
   function initCockpit() {
+    const container = document.querySelector('.terminal-cockpit-container');
+    if (!container) return;
+
+    stop();
+
     const toggleBtn = document.getElementById('cockpit-toggle-btn');
     const resetBtn = document.getElementById('cockpit-reset-btn');
     const backendBtn = document.getElementById('cockpit-backend-btn');
@@ -341,6 +355,7 @@ ${asciiPlot}└─────────────────────�
           if (playIcon) playIcon.innerText = '⏸';
           const toggleBtnText = document.getElementById('cockpit-play-text');
           if (toggleBtnText) toggleBtnText.innerText = 'Pause';
+          start();
           return;
         }
 
@@ -353,10 +368,12 @@ ${asciiPlot}└─────────────────────�
           if (playIcon) playIcon.innerText = '⏸';
           if (playText) playText.innerText = 'Pause';
           if (statusText) statusText.innerText = 'RUNNING (1.0x Realtime Pacing)';
+          start();
         } else {
           if (playIcon) playIcon.innerText = '▶';
           if (playText) playText.innerText = 'Resume';
           if (statusText) statusText.innerText = 'PAUSED';
+          stop();
         }
       };
     }
@@ -373,6 +390,7 @@ ${asciiPlot}└─────────────────────�
         const toggleBtnText = document.getElementById('cockpit-play-text');
         if (toggleBtnText) toggleBtnText.innerText = 'Pause';
         updateFrame();
+        start();
       };
     }
 
@@ -387,10 +405,38 @@ ${asciiPlot}└─────────────────────�
       };
     }
 
-    start();
+    // Lazy execution: only tick when visible on screen
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (isRunning) start();
+          } else {
+            stop();
+          }
+        });
+      }, { threshold: 0.1 });
+      observer.observe(container);
+    } else {
+      start();
+    }
+
+    updateFrame();
   }
 
-  // Setup on page load and view transitions
+  // Auto-pause when tab is hidden to save power
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stop();
+    } else if (isRunning) {
+      start();
+    }
+  });
+
+  // Cleanup on page transitions
+  document.addEventListener('astro:before-swap', stop);
+
+  // Setup on page load
   document.addEventListener('astro:page-load', () => {
     initCockpit();
   });

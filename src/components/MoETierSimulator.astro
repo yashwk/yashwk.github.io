@@ -678,6 +678,22 @@
     stepToken();
   }
 
+  function stopStream() {
+    if (streamTimer) {
+      clearInterval(streamTimer);
+      streamTimer = null;
+      isStreaming = false;
+      const playBtn = document.getElementById('moe-play-btn');
+      if (playBtn) playBtn.innerText = '▶ Stream Generation';
+    }
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopStream();
+  });
+
+  document.addEventListener('astro:before-swap', stopStream);
+
   document.addEventListener('astro:page-load', () => {
     init();
   });
