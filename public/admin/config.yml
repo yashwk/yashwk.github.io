@@ -38,6 +38,7 @@ collections:
             summary: "{{fields.name}}"
             fields:
               - { label: "Project Name", name: "name", widget: "string" }
+              - { label: "Icon Path", name: "icon", widget: "string", required: false }
               - { label: "Description", name: "description", widget: "text" }
               - { label: "Tags", name: "tags", widget: "list", default: [] }
               - label: "Links"

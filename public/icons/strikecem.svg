@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <!-- Facet Body Shading Gradients -->
+    <linearGradient id="sc-l-base" x1="10" y1="20" x2="50" y2="70" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#141f27"/>
+      <stop offset="50%" stop-color="#182732"/>
+      <stop offset="100%" stop-color="#0e171f"/>
+    </linearGradient>
+    <linearGradient id="sc-r-base" x1="90" y1="20" x2="50" y2="70" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#121e2a"/>
+      <stop offset="50%" stop-color="#172737"/>
+      <stop offset="100%" stop-color="#0b1620"/>
+    </linearGradient>
+    <linearGradient id="sc-dome-grad" x1="50" y1="42" x2="50" y2="65" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1a343f"/>
+      <stop offset="60%" stop-color="#11252d"/>
+      <stop offset="100%" stop-color="#09151c"/>
+    </linearGradient>
+
+    <!-- Neon Glow Filter matching AI luminescence -->
+    <filter id="neon" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="1.8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Ambient Glow Layer behind the craft -->
+  <g filter="url(#neon)">
+    <!-- Top-Right Diagonal Ray & 4 Concentric Radar Arcs -->
+    <line x1="60" y1="41" x2="86" y2="15" stroke="#00f5ff" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M 60 30 A 11 11 0 0 1 71 41" stroke="#00f5ff" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M 60 23 A 18 18 0 0 1 78 41" stroke="#00f5ff" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M 60 16 A 25 25 0 0 1 85 41" stroke="#00f5ff" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M 60 9 A 32 32 0 0 1 92 41" stroke="#00f5ff" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+    <!-- Top-Left Incident Rays (Cyan) -->
+    <line x1="26" y1="17" x2="41" y2="32" stroke="#00f5ff" stroke-width="2.2" stroke-linecap="round"/>
+    <line x1="17" y1="21" x2="35" y2="39" stroke="#00f5ff" stroke-width="2.2" stroke-linecap="round"/>
+    <line x1="11" y1="32" x2="28" y2="49" stroke="#00f5ff" stroke-width="2.2" stroke-linecap="round"/>
+    <line x1="14" y1="41" x2="22" y2="49" stroke="#00f5ff" stroke-width="2.2" stroke-linecap="round"/>
+
+    <!-- Reflected Arrow 1 (Bouncing UP-RIGHT towards (41, 19)) -->
+    <line x1="35" y1="39" x2="41" y2="21" stroke="#00ffaa" stroke-width="2.2" stroke-linecap="round"/>
+    <polygon points="41,21 37,26 44,24" fill="#00ffaa"/>
+
+    <!-- Reflected Arrow 2 (Bouncing UP-LEFT towards (18, 38)) -->
+    <line x1="28" y1="49" x2="19" y2="40" stroke="#00ffaa" stroke-width="2.2" stroke-linecap="round"/>
+    <polygon points="19,40 22,46 25,40" fill="#00ffaa"/>
+
+    <!-- Bottom-Left Concentric Radar Wave Arcs (Emerald) -->
+    <path d="M 16 63 C 17 71 24 77 35 81" stroke="#00ff9d" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M 18 69 C 20 77 26 83 36 87" stroke="#00ff9d" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M 20 75 C 23 82 29 88 37 92" stroke="#00ff9d" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+
+    <!-- Bottom-Right Concentric Radar Wave Arcs (Emerald) -->
+    <path d="M 84 63 C 83 71 76 77 65 81" stroke="#00ff9d" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M 82 69 C 80 77 74 83 64 87" stroke="#00ff9d" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M 80 75 C 77 82 71 88 63 92" stroke="#00ff9d" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+
+    <!-- Main Stealth Hull Base -->
+    <polygon points="50,11 90,51 75,61 50,91 25,61 10,51" fill="#111620"/>
+
+    <!-- Left Upper Wing Facet -->
+    <polygon points="50,11 10,51 28,57 50,41" fill="url(#sc-l-base)" stroke="#00f5ff" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- Right Upper Wing Facet -->
+    <polygon points="50,11 90,51 72,57 50,41" fill="url(#sc-r-base)" stroke="#00f5ff" stroke-width="2.2" stroke-linejoin="round"/>
+
+    <!-- Wing Inset Facet Panels -->
+    <polygon points="17,51 26,49 31,56 22,56" fill="#182530" stroke="#00ffaa" stroke-width="1.8" stroke-linejoin="round"/>
+    <polygon points="83,51 74,49 69,56 78,56" fill="#182736" stroke="#00f5ff" stroke-width="1.8" stroke-linejoin="round"/>
+
+    <!-- Lower Chine & Keel Facets -->
+    <polygon points="10,51 25,61 36,56 28,57" fill="#0d141b" stroke="#00ff9d" stroke-width="1.8" stroke-linejoin="round"/>
+    <polygon points="25,61 50,91 50,62 36,56" fill="#0f1922" stroke="#00ff9d" stroke-width="2" stroke-linejoin="round"/>
+
+    <polygon points="90,51 75,61 64,56 72,57" fill="#0c151e" stroke="#00f5ff" stroke-width="1.8" stroke-linejoin="round"/>
+    <polygon points="75,61 50,91 50,62 64,56" fill="#0e1b26" stroke="#00f5ff" stroke-width="2" stroke-linejoin="round"/>
+
+    <!-- Lower Keel Triangle Insets -->
+    <polygon points="50,62 43,77 50,91" fill="#15242e" stroke="#00ff9d" stroke-width="1.5"/>
+    <polygon points="50,62 57,77 50,91" fill="#152636" stroke="#00f5ff" stroke-width="1.5"/>
+
+    <!-- Upper Surface Current Wave Ripples (Nestled around the Cockpit) -->
+    <!-- Left Ripples -->
+    <path d="M 33 46 C 36 39 41 38 46 43" stroke="#00f5ff" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    <path d="M 37 49 C 40 43 44 42 47 46" stroke="#00ffaa" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M 40 52 C 42 47 45 46 48 49" stroke="#00ffaa" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+
+    <!-- Right Ripples -->
+    <path d="M 67 46 C 64 39 59 38 54 43" stroke="#00f5ff" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    <path d="M 63 49 C 60 43 56 42 53 46" stroke="#00f5ff" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M 60 52 C 58 47 55 46 52 49" stroke="#00f5ff" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+
+    <!-- Upper Ridge Lines to Nose Apex -->
+    <line x1="50" y1="11" x2="41" y2="41" stroke="#00ffaa" stroke-width="1.8"/>
+    <line x1="50" y1="11" x2="59" y2="41" stroke="#00f5ff" stroke-width="1.8"/>
+
+    <!-- Central Cockpit Dome (Faceted Diamond Gem) -->
+    <polygon points="50,41 57,48 56,62 50,62 44,62 43,48" fill="url(#sc-dome-grad)" stroke="#00ffaa" stroke-width="2.2" stroke-linejoin="round"/>
+    <polygon points="50,43 54,52 50,60 46,52" fill="#193540" stroke="#00f5ff" stroke-width="1.5"/>
+
+    <!-- Centerline Keel Spine -->
+    <line x1="50" y1="11" x2="50" y2="41" stroke="#00f5ff" stroke-width="2.4" stroke-linecap="round"/>
+    <line x1="50" y1="41" x2="50" y2="62" stroke="#ffffff" stroke-width="1.8"/>
+    <line x1="50" y1="62" x2="50" y2="91" stroke="#00f5ff" stroke-width="2.4" stroke-linecap="round"/>
+
+    <!-- Top Apex Beacon Dot -->
+    <circle cx="50" cy="11" r="1.8" fill="#ffffff"/>
+  </g>
+</svg>

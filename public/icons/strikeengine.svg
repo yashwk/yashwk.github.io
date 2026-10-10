@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <!-- Neon Glow Filter matching strikecem and libxtm -->
+    <filter id="neon" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="1.8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Wing Facet Gradients (Midnight Navy to Electric Azure) -->
+    <!-- Left Forebody Chine (Deep Navy Shadow) -->
+    <linearGradient id="se-f-chine-l" x1="41" y1="14" x2="50" y2="27" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <!-- Right Forebody Chine (Electric Azure Highlight) -->
+    <linearGradient id="se-f-chine-r" x1="50" y1="14" x2="59" y2="27" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7dd3fc"/>
+      <stop offset="60%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+
+    <!-- Left Outer Delta Wing (Deep Indigo / Navy) -->
+    <linearGradient id="se-wing-l-out" x1="12" y1="36" x2="41" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#172554"/>
+      <stop offset="50%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#0b1322"/>
+    </linearGradient>
+    <!-- Right Outer Delta Wing (Electric Cyan / Azure) -->
+    <linearGradient id="se-wing-r-out" x1="88" y1="36" x2="59" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+
+    <!-- Left Mid Wing Panel (Medium Navy) -->
+    <linearGradient id="se-wing-l-mid" x1="28" y1="24" x2="45" y2="54" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1e40af"/>
+      <stop offset="100%" stop-color="#111c2e"/>
+    </linearGradient>
+    <!-- Right Mid Wing Panel (Luminous Sky Blue) -->
+    <linearGradient id="se-wing-r-mid" x1="72" y1="24" x2="55" y2="54" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#1e40af"/>
+    </linearGradient>
+
+    <!-- Left Fuselage / Nacelle Panel (Dark Keel) -->
+    <linearGradient id="se-fuse-l" x1="38" y1="32" x2="50" y2="53" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#172554"/>
+      <stop offset="100%" stop-color="#0a0f1d"/>
+    </linearGradient>
+    <!-- Right Fuselage / Nacelle Panel (Vibrant Azure) -->
+    <linearGradient id="se-fuse-r" x1="62" y1="32" x2="50" y2="53" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#172554"/>
+    </linearGradient>
+
+    <!-- Cockpit Canopy Glass (Faceted Gem) -->
+    <linearGradient id="se-canopy-l" x1="45" y1="14" x2="50" y2="39" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7dd3fc"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <linearGradient id="se-canopy-r" x1="55" y1="14" x2="50" y2="39" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="40%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+
+    <!-- Supersonic Plasma Thrust Plume -->
+    <linearGradient id="se-flame" x1="50" y1="56" x2="50" y2="95" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="25%" stop-color="#38bdf8"/>
+      <stop offset="68%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Orbital Trajectory Gradient -->
+    <linearGradient id="se-orbit" x1="10" y1="15" x2="90" y2="85" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00f5ff"/>
+      <stop offset="45%" stop-color="#38bdf8"/>
+      <stop offset="80%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#c084fc"/>
+    </linearGradient>
+  </defs>
+
+  <g filter="url(#neon)">
+    <!-- ============================================== -->
+    <!-- 1. ORBITAL TRAJECTORY HALO (BEHIND CRAFT)      -->
+    <!-- Circular orbital track framing the aerospace craft -->
+    <!-- ============================================== -->
+    <circle cx="50" cy="48" r="41" stroke="url(#se-orbit)" stroke-width="1.8" stroke-linecap="round" opacity="0.65"/>
+    <circle cx="50" cy="48" r="45" stroke="#38bdf8" stroke-width="1.1" stroke-dasharray="5 4" stroke-linecap="round" opacity="0.35"/>
+    <!-- Orbital Waypoint Node -->
+    <circle cx="89" cy="34" r="2.2" fill="#ffffff"/>
+
+    <!-- ============================================== -->
+    <!-- 2. SUPERSONIC MACH BOW SHOCKWAVES              -->
+    <!-- ============================================== -->
+    <!-- Inner Mach Compression Shockwave (Cyan) -->
+    <path d="M 30 24 C 36 14 43 7 50 4 C 57 7 64 14 70 24" stroke="#7dd3fc" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.8"/>
+    <!-- Outer Expansion Mach Shockwave (Dashed) -->
+    <path d="M 20 38 C 30 18 40 8 50 1 C 60 8 70 18 80 38" stroke="#38bdf8" stroke-width="1.3" stroke-dasharray="4 3" stroke-linecap="round" fill="none" opacity="0.45"/>
+
+    <!-- ============================================== -->
+    <!-- 3. MAIN FACETED STEALTH WAVERIDER BODY         -->
+    <!-- ============================================== -->
+    <!-- Dark Silhouette Base Plate -->
+    <polygon points="50,4 59,24 88,58 72,55 62,54 56,53 44,53 38,54 28,55 12,58 41,24" fill="#090e1a"/>
+
+    <!-- Left Outer Delta Wing Panel -->
+    <polygon points="41,24 12,58 28,55" fill="url(#se-wing-l-out)" stroke="#38bdf8" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- Right Outer Delta Wing Panel -->
+    <polygon points="59,24 88,58 72,55" fill="url(#se-wing-r-out)" stroke="#7dd3fc" stroke-width="2.2" stroke-linejoin="round"/>
+
+    <!-- Left Mid Wing Panel -->
+    <polygon points="41,24 28,55 38,54 45,27" fill="url(#se-wing-l-mid)" stroke="#38bdf8" stroke-width="1.8" stroke-linejoin="round"/>
+    <!-- Right Mid Wing Panel -->
+    <polygon points="59,24 72,55 62,54 55,27" fill="url(#se-wing-r-mid)" stroke="#7dd3fc" stroke-width="1.8" stroke-linejoin="round"/>
+
+    <!-- Left Forebody Chine Strake -->
+    <polygon points="50,4 41,24 45,27 50,14" fill="url(#se-f-chine-l)" stroke="#38bdf8" stroke-width="1.8" stroke-linejoin="round"/>
+    <!-- Right Forebody Chine Strake -->
+    <polygon points="50,4 59,24 55,27 50,14" fill="url(#se-f-chine-r)" stroke="#7dd3fc" stroke-width="1.8" stroke-linejoin="round"/>
+
+    <!-- Left Dorsal Fuselage / Nacelle Panel -->
+    <polygon points="45,27 50,39 50,53 44,53 38,54" fill="url(#se-fuse-l)" stroke="#38bdf8" stroke-width="1.6" stroke-linejoin="round"/>
+    <!-- Right Dorsal Fuselage / Nacelle Panel -->
+    <polygon points="55,27 50,39 50,53 56,53 62,54" fill="url(#se-fuse-r)" stroke="#7dd3fc" stroke-width="1.6" stroke-linejoin="round"/>
+
+    <!-- Canted Twin Vertical Stabilizers (SR-71 / F-22 canted fins) -->
+    <!-- Left Fin -->
+    <polygon points="40,36 34,55 37,54 42,37" fill="#1e3a8a" stroke="#38bdf8" stroke-width="1.4" stroke-linejoin="round"/>
+    <!-- Right Fin -->
+    <polygon points="60,36 66,55 63,54 58,37" fill="#2563eb" stroke="#7dd3fc" stroke-width="1.4" stroke-linejoin="round"/>
+
+    <!-- ============================================== -->
+    <!-- 4. ENGINE NOZZLE & SUPERSONIC PLUME            -->
+    <!-- ============================================== -->
+    <!-- Plasma Thrust Plume -->
+    <polygon points="44,55 56,55 50,95" fill="url(#se-flame)"/>
+    <!-- Mach Shock Diamond 1 (Primary Combustion Shock) -->
+    <polygon points="50,57 53.5,62 50,67 46.5,62" fill="#ffffff" stroke="#38bdf8" stroke-width="0.8"/>
+    <!-- Mach Shock Diamond 2 (Secondary Expansion Shock) -->
+    <polygon points="50,69 52.5,73.5 50,78 47.5,73.5" fill="#bae6fd" stroke="#818cf8" stroke-width="0.6"/>
+    <!-- Engine Exhaust Nozzle Shroud Collar -->
+    <polygon points="43,53 57,53 55,56 45,56" fill="#090e1a" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round"/>
+
+    <!-- ============================================== -->
+    <!-- 5. FACETED STEALTH COCKPIT CANOPY & NOSE APEX  -->
+    <!-- ============================================== -->
+    <!-- Diamond Gem Canopy (Left and Right Facets) -->
+    <polygon points="50,14 45,27 50,39" fill="url(#se-canopy-l)" stroke="#7dd3fc" stroke-width="1.4" stroke-linejoin="round"/>
+    <polygon points="50,14 55,27 50,39" fill="url(#se-canopy-r)" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round"/>
+    <!-- Canopy Center Glint Ridge -->
+    <line x1="50" y1="14" x2="50" y2="39" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
+
+    <!-- Nose Pitot Telemetry Probe (Razor Needle Apex) -->
+    <line x1="50" y1="1" x2="50" y2="14" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+    <circle cx="50" cy="1" r="1.3" fill="#ffffff"/>
+  </g>
+</svg>
