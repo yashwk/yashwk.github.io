@@ -27,10 +27,13 @@ function formatDate(date: Date) {
   description={post.data.description}
   image={`/og/${post.id}.png`}
   showProgress={true}
+  type="article"
+  pubDate={post.data.pubDate}
+  tags={post.data.tags}
 >
   <article class="prose">
-    <nav style="margin-bottom: 2rem;">
-      <a href="/">&larr; Back to home</a>
+    <nav class="breadcrumb-nav" style="margin-bottom: 1.5rem;">
+      <a href="/blog/">&larr; Back to all articles</a>
     </nav>
 
     <header style="text-align: left; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;">
@@ -57,8 +60,8 @@ function formatDate(date: Date) {
 
     <Content />
 
-    <nav style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
-      <a href="/">&larr; Back to home</a>
+    <nav class="breadcrumb-nav" style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+      <a href="/blog/">&larr; Back to all articles</a>
     </nav>
   </article>
 </BaseLayout>

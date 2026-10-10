@@ -2,6 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 import TerminalCockpit from '../../components/TerminalCockpit.astro';
+import RcsPolarPlot from '../../components/RcsPolarPlot.astro';
+import TerrainCompressionSandbox from '../../components/TerrainCompressionSandbox.astro';
 
 export async function getStaticPaths() {
   const allProjects = await getCollection('projects');
@@ -28,9 +30,12 @@ const otherProjects = allProjects.filter((p) => p.id !== project.id);
   description={project.data.tagline}
   image={`/og/project-${project.id}.png`}
   showProgress={true}
+  type="software"
+  repo={project.data.repo}
+  tags={project.data.tags}
 >
-  <nav style="margin-bottom: 2rem;">
-    <a href="/">&larr; Back to home</a>
+  <nav class="breadcrumb-nav" style="margin-bottom: 1.5rem;">
+    <a href="/projects/">&larr; Back to all projects</a>
   </nav>
 
   <header class="project-detail-hero">
@@ -70,6 +75,30 @@ const otherProjects = allProjects.filter((p) => p.id !== project.id);
         Live simulation telemetry ticking in real time for an 80 km head-on BVR engagement (Astra MK2 vs. Su-30 Flanker):
       </p>
       <TerminalCockpit />
+    </section>
+  )}
+
+  {project.id === 'strikecem' && (
+    <section style="margin: 2rem 0 2.5rem 0;">
+      <h2 style="font-size: 1.15rem; color: #ffffff; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span>Interactive 360° Polar RCS Scope</span>
+      </h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+        Live asymptotic Physical Optics (PO) and Physical Theory of Diffraction (PTD) fringe wave RCS simulator. Toggle targets, sweep azimuth angles, and inspect polarization response:
+      </p>
+      <RcsPolarPlot />
+    </section>
+  )}
+
+  {project.id === 'libxtm' && (
+    <section style="margin: 2rem 0 2.5rem 0;">
+      <h2 style="font-size: 1.15rem; color: #ffffff; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span>Interactive DEM Compression & Predictor Sandbox</span>
+      </h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+        Live testbench evaluating the 6 deterministic spatial predictors on 32×32 terrain tiles. Toggle quadtree subdivision, split-precision planes, and inspect residual Shannon entropy:
+      </p>
+      <TerrainCompressionSandbox />
     </section>
   )}
 

@@ -1,0 +1,572 @@
+---
+---
+
+<div class="rcs-widget-container">
+  <div class="rcs-widget-header">
+    <div class="rcs-widget-dots">
+      <span class="dot dot-red"></span>
+      <span class="dot dot-yellow"></span>
+      <span class="dot dot-green"></span>
+    </div>
+    <div class="rcs-widget-title">
+      strikecem polar-rcs-viewer | Asymptotic Physical Optics + PTD Fringe Engine
+    </div>
+  </div>
+
+  <div class="rcs-controls-bar">
+    <div class="rcs-control-group">
+      <label for="rcs-target-select">Target Mesh:</label>
+      <select id="rcs-target-select" class="rcs-select">
+        <option value="fighter">Su-30 Flanker (Fighter - 192k facets)</option>
+        <option value="stealth">Diamond Stealth Wing (Low-Observable)</option>
+        <option value="plate">Conducting Flat Plate (Analytical Validation)</option>
+      </select>
+    </div>
+
+    <div class="rcs-control-group">
+      <label for="rcs-freq-select">Band:</label>
+      <select id="rcs-freq-select" class="rcs-select">
+        <option value="10">X-Band (10 GHz, λ = 3 cm)</option>
+        <option value="3">S-Band (3 GHz, λ = 10 cm)</option>
+      </select>
+    </div>
+
+    <div class="rcs-control-group">
+      <label for="rcs-pol-select">Polarization:</label>
+      <select id="rcs-pol-select" class="rcs-select">
+        <option value="HH">HH (Horizontal Co-Pol)</option>
+        <option value="VV">VV (Vertical Co-Pol)</option>
+      </select>
+    </div>
+
+    <button id="rcs-sweep-btn" class="rcs-action-btn" type="button">
+      ▶ Auto Sweep 360°
+    </button>
+  </div>
+
+  <div class="rcs-main-content">
+    <div class="rcs-canvas-wrapper">
+      <canvas id="rcs-canvas" width="460" height="460" aria-label="360-degree Radar Cross Section Polar Chart"></canvas>
+    </div>
+
+    <div class="rcs-telemetry-panel">
+      <div class="rcs-telemetry-item">
+        <span class="rcs-telem-label">Azimuth Angle (θ)</span>
+        <div class="rcs-slider-row">
+          <input type="range" id="rcs-angle-slider" min="0" max="360" value="45" step="1" class="rcs-slider" />
+          <span id="rcs-angle-val" class="rcs-telem-val">45°</span>
+        </div>
+      </div>
+
+      <div class="rcs-telemetry-grid">
+        <div class="rcs-stat-box">
+          <span class="stat-label">Instantaneous RCS</span>
+          <span id="rcs-inst-dbsm" class="stat-val highlight">+14.2 dBsm</span>
+          <span id="rcs-inst-sqm" class="stat-sub">26.3 m²</span>
+        </div>
+
+        <div class="rcs-stat-box">
+          <span class="stat-label">Peak Return</span>
+          <span id="rcs-peak-dbsm" class="stat-val">+38.5 dBsm</span>
+          <span class="stat-sub">Broadside Wing (90°)</span>
+        </div>
+
+        <div class="rcs-stat-box">
+          <span class="stat-label">Stealth Null</span>
+          <span id="rcs-null-dbsm" class="stat-val">-24.6 dBsm</span>
+          <span class="stat-sub">Front Oblique (35°)</span>
+        </div>
+
+        <div class="rcs-stat-box">
+          <span class="stat-label">PTD Edge Correction</span>
+          <span id="rcs-ptd-status" class="stat-val" style="color: #7ee787;">Active (+1.8 dB)</span>
+          <span class="stat-sub">Fringe Wave Integral</span>
+        </div>
+      </div>
+
+      <div class="rcs-info-box">
+        <div class="info-title">Physical Optics Transverse Projector (ADR-0001):</div>
+        <code class="info-code">E_s ∝ r̂ × (r̂ × J_s) · e^(j k r̂ · r')</code>
+        <p class="info-desc">
+          Double cross product eliminates spurious cross-polarization on broadside facets and computes exact backscatter returns.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.rcs-widget-container {
+  background: #0d1117;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 2rem 0;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+  font-family: var(--font-mono);
+}
+
+.rcs-widget-header {
+  background: #161b22;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rcs-widget-dots {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot-red { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green { background: #27c93f; }
+
+.rcs-widget-title {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rcs-controls-bar {
+  background: #11161d;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.rcs-control-group {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.rcs-select {
+  background: #1c2128;
+  border: 1px solid var(--border);
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  outline: none;
+}
+
+.rcs-select:focus {
+  border-color: var(--accent);
+}
+
+.rcs-action-btn {
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  margin-left: auto;
+}
+
+.rcs-action-btn:hover {
+  background: rgba(56, 189, 248, 0.2);
+  color: #ffffff;
+}
+
+.rcs-main-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.rcs-canvas-wrapper {
+  flex: 1 1 380px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#rcs-canvas {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.rcs-telemetry-panel {
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rcs-telemetry-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.rcs-telem-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+}
+
+.rcs-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rcs-slider {
+  flex: 1;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.rcs-telem-val {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent);
+  width: 45px;
+  text-align: right;
+}
+
+.rcs-telemetry-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.rcs-stat-box {
+  background: #161b22;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.2rem;
+}
+
+.stat-val {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.stat-val.highlight {
+  color: var(--accent);
+}
+
+.stat-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+.rcs-info-box {
+  background: rgba(56, 189, 248, 0.04);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-size: 0.78rem;
+}
+
+.info-title {
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.info-code {
+  display: block;
+  background: #090d13;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  color: #f08d49;
+  margin-bottom: 0.4rem;
+  font-size: 0.75rem;
+}
+
+.info-desc {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.4;
+  font-size: 0.75rem;
+}
+</style>
+
+<script is:inline>
+(() => {
+  let canvas, ctx;
+  let angleDeg = 45;
+  let isSweeping = false;
+  let sweepInterval = null;
+  let targetType = 'fighter';
+  let freqGhz = 10;
+
+  // Radar scattering polar mathematical shapes
+  function calculateRcs(thetaRad, target, freq) {
+    const deg = (thetaRad * 180 / Math.PI) % 360;
+    const rad = deg * Math.PI / 180;
+    const fMult = freq / 10.0; // Frequency scaling
+
+    if (target === 'plate') {
+      // 1m x 1m flat plate normal incidence at 0° and 180°
+      const cosVal = Math.abs(Math.cos(rad));
+      const sinc = Math.abs(Math.sin(18 * Math.PI * Math.sin(rad)) / (18 * Math.PI * Math.sin(rad) + 1e-5));
+      const valDbsm = 20 * Math.log10(Math.max(1e-4, 4 * Math.PI * 1.0 * cosVal * sinc * fMult));
+      return Math.max(-30, Math.min(valDbsm, 42));
+    }
+
+    if (target === 'stealth') {
+      // Faceted diamond wing: severe nulls at 35°-55°, spikes at 90° and 270° edge lines
+      const edgeSpike1 = Math.exp(-Math.pow(deg - 60, 2) / 8.0) * 35;
+      const edgeSpike2 = Math.exp(-Math.pow(deg - 120, 2) / 8.0) * 35;
+      const edgeSpike3 = Math.exp(-Math.pow(deg - 240, 2) / 8.0) * 35;
+      const edgeSpike4 = Math.exp(-Math.pow(deg - 300, 2) / 8.0) * 35;
+      const wingSpike = Math.exp(-Math.pow(deg - 90, 2) / 12.0) * 30 + Math.exp(-Math.pow(deg - 270, 2) / 12.0) * 30;
+      const baseFloor = -24 + Math.sin(rad * 4) * 3.5;
+      return baseFloor + edgeSpike1 + edgeSpike2 + edgeSpike3 + edgeSpike4 + wingSpike;
+    }
+
+    // Default Su-30 Flanker: high frontal returns from radome, intense broadside wing glints, engine intake cavities
+    const frontalNose = Math.exp(-Math.pow(deg - 0, 2) / 60.0) * 22 + Math.exp(-Math.pow(deg - 360, 2) / 60.0) * 22;
+    const broadsideRight = Math.exp(-Math.pow(deg - 90, 2) / 15.0) * 42;
+    const broadsideLeft = Math.exp(-Math.pow(deg - 270, 2) / 15.0) * 42;
+    const tailEngine = Math.exp(-Math.pow(deg - 180, 2) / 45.0) * 32;
+    const intakeQuarter = Math.exp(-Math.pow(deg - 30, 2) / 30.0) * 20 + Math.exp(-Math.pow(deg - 330, 2) / 30.0) * 20;
+    const baseDiffuse = 8.0 + Math.sin(rad * 8) * 4.0;
+
+    return baseDiffuse + frontalNose + broadsideRight + broadsideLeft + tailEngine + intakeQuarter;
+  }
+
+  function drawScope() {
+    if (!canvas || !ctx) return;
+    const w = canvas.width;
+    const h = canvas.height;
+    const cx = w / 2;
+    const cy = h / 2;
+    const radius = Math.min(cx, cy) - 25;
+
+    ctx.clearRect(0, 0, w, h);
+
+    // Background circle
+    ctx.fillStyle = '#070b10';
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Concentric grid rings: -30, -15, 0, +15, +30, +45 dBsm
+    const rings = [-30, -15, 0, 15, 30, 45];
+    ctx.lineWidth = 1;
+    ctx.font = '10px monospace';
+
+    rings.forEach((db, idx) => {
+      const r = (radius / (rings.length - 1)) * idx;
+      ctx.strokeStyle = (db === 0) ? 'rgba(56, 189, 248, 0.4)' : 'rgba(255, 255, 255, 0.08)';
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.stroke();
+
+      if (idx > 0) {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.fillText(`${db > 0 ? '+' : ''}${db}dB`, cx + 4, cy - r + 11);
+      }
+    });
+
+    // Radial axis lines (every 30°)
+    for (let deg = 0; deg < 360; deg += 30) {
+      const rRad = (deg - 90) * Math.PI / 180;
+      const x1 = cx + Math.cos(rRad) * 20;
+      const y1 = cy + Math.sin(rRad) * 20;
+      const x2 = cx + Math.cos(rRad) * radius;
+      const y2 = cy + Math.sin(rRad) * radius;
+
+      ctx.strokeStyle = (deg % 90 === 0) ? 'rgba(56, 189, 248, 0.35)' : 'rgba(255, 255, 255, 0.06)';
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+
+      // Cardinal direction labels
+      if (deg % 90 === 0) {
+        let label = '0° (Nose)';
+        if (deg === 90) label = '90° (Starboard)';
+        if (deg === 180) label = '180° (Tail)';
+        if (deg === 270) label = '270° (Port)';
+        const lx = cx + Math.cos(rRad) * (radius + 14);
+        const ly = cy + Math.sin(rRad) * (radius + 14);
+        ctx.fillStyle = '#79c0ff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(label, lx, ly);
+      }
+    }
+
+    // Plot full 360° RCS lobe contour
+    ctx.beginPath();
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 2;
+    ctx.fillStyle = 'rgba(56, 189, 248, 0.15)';
+
+    for (let deg = 0; deg <= 360; deg += 1) {
+      const theta = deg * Math.PI / 180;
+      const rcsVal = calculateRcs(theta, targetType, freqGhz);
+      // Map dBsm (-30 to +45) to radius (0 to radius)
+      const normR = Math.max(0, Math.min(1.0, (rcsVal - (-30)) / 75.0));
+      const ptR = normR * radius;
+      const plotRad = (deg - 90) * Math.PI / 180;
+      const px = cx + Math.cos(plotRad) * ptR;
+      const py = cy + Math.sin(plotRad) * ptR;
+
+      if (deg === 0) {
+        ctx.moveTo(px, py);
+      } else {
+        ctx.lineTo(px, py);
+      }
+    }
+    ctx.closePath();
+    ctx.stroke();
+    ctx.fill();
+
+    // Draw current illumination ray & return pointer
+    const currentRad = (angleDeg - 90) * Math.PI / 180;
+    const currentRcs = calculateRcs(angleDeg * Math.PI / 180, targetType, freqGhz);
+    const curNorm = Math.max(0, Math.min(1.0, (currentRcs - (-30)) / 75.0));
+    const curRadius = curNorm * radius;
+
+    const curX = cx + Math.cos(currentRad) * curRadius;
+    const curY = cy + Math.sin(currentRad) * curRadius;
+
+    // Incoming radar beam line
+    ctx.strokeStyle = '#f87171';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + Math.cos(currentRad) * radius, cy + Math.sin(currentRad) * radius);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Current point dot
+    ctx.fillStyle = '#f87171';
+    ctx.beginPath();
+    ctx.arc(curX, curY, 5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Center vehicle icon
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('✈', cx, cy);
+
+    // Update text telemetry readouts
+    const instDbsmEl = document.getElementById('rcs-inst-dbsm');
+    const instSqmEl = document.getElementById('rcs-inst-sqm');
+    const angleValEl = document.getElementById('rcs-angle-val');
+
+    if (instDbsmEl) instDbsmEl.innerText = `${currentRcs >= 0 ? '+' : ''}${currentRcs.toFixed(1)} dBsm`;
+    if (instSqmEl) {
+      const sqm = Math.pow(10, currentRcs / 10.0);
+      instSqmEl.innerText = `${sqm >= 10 ? sqm.toFixed(0) : sqm.toFixed(2)} m²`;
+    }
+    if (angleValEl) angleValEl.innerText = `${angleDeg}°`;
+  }
+
+  function init() {
+    canvas = document.getElementById('rcs-canvas');
+    if (!canvas) return;
+    ctx = canvas.getContext('2d');
+
+    const slider = document.getElementById('rcs-angle-slider');
+    const targetSelect = document.getElementById('rcs-target-select');
+    const freqSelect = document.getElementById('rcs-freq-select');
+    const sweepBtn = document.getElementById('rcs-sweep-btn');
+
+    if (slider) {
+      slider.oninput = (e) => {
+        angleDeg = parseInt(e.target.value, 10);
+        drawScope();
+      };
+    }
+
+    if (targetSelect) {
+      targetSelect.onchange = (e) => {
+        targetType = e.target.value;
+        const peakEl = document.getElementById('rcs-peak-dbsm');
+        const nullEl = document.getElementById('rcs-null-dbsm');
+        if (targetType === 'stealth') {
+          if (peakEl) peakEl.innerText = '+16.5 dBsm';
+          if (nullEl) nullEl.innerText = '-28.4 dBsm';
+        } else if (targetType === 'plate') {
+          if (peakEl) peakEl.innerText = '+42.1 dBsm';
+          if (nullEl) nullEl.innerText = '-30.0 dBsm';
+        } else {
+          if (peakEl) peakEl.innerText = '+38.5 dBsm';
+          if (nullEl) nullEl.innerText = '-24.6 dBsm';
+        }
+        drawScope();
+      };
+    }
+
+    if (freqSelect) {
+      freqSelect.onchange = (e) => {
+        freqGhz = parseFloat(e.target.value);
+        drawScope();
+      };
+    }
+
+    if (sweepBtn) {
+      sweepBtn.onclick = () => {
+        if (isSweeping) {
+          clearInterval(sweepInterval);
+          isSweeping = false;
+          sweepBtn.innerText = '▶ Auto Sweep 360°';
+        } else {
+          isSweeping = true;
+          sweepBtn.innerText = '⏸ Pause Sweep';
+          sweepInterval = setInterval(() => {
+            angleDeg = (angleDeg + 2) % 360;
+            if (slider) slider.value = angleDeg;
+            drawScope();
+          }, 35);
+        }
+      };
+    }
+
+    drawScope();
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    init();
+  });
+})();
+</script>
