@@ -1,10 +1,12 @@
 ---
 name: "StrikeEngine"
 tagline: "Data-oriented C++23 aerospace simulation engine & GNC framework"
+description: "A data-oriented C++23 aerospace simulation engine and GNC framework for 6-DOF missile engagements, featuring Vulkan GPU compute and a live terminal telemetry cockpit."
 icon: "/icons/strikeengine.svg"
 repo: "https://github.com/yashwk/StrikeEngine"
 blogSlug: "aerospace-simulation-architecture-strikeengine"
 tags: ["C++23", "Aerospace Simulation", "Vulkan 1.3", "GNC", "Slang Shaders", "Python / PyTorch"]
+order: 1
 ---
 
 **StrikeEngine** is a data-oriented C++23 aerospace simulation engine and Guidance, Navigation, and Control (GNC) framework. I built it for simulating high-speed 6-DOF (six degrees of freedom) missile flyouts, air-to-air Beyond-Visual-Range (BVR) engagements, surface-to-air interceptors (SAMs), and large-scale Monte Carlo dispersion studies.

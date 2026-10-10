@@ -1,10 +1,12 @@
 ---
 name: "StrikeCEM"
 tagline: "High-frequency Radar Cross Section (RCS) database generator for StrikeEngine"
+description: "A Physical Optics radar cross-section (RCS) database generator in C++20/CUDA, computing high-frequency stealth signatures from 3D meshes for StrikeEngine."
 icon: "/icons/strikecem.svg"
 repo: "https://github.com/yashwk/StrikeCEM"
 blogSlug: "physical-optics-radar-cross-section"
 tags: ["Computational Electromagnetics", "Physical Optics", "CUDA", "C++20", "HDF5", "Radar Cross Section"]
+order: 2
 ---
 
 **StrikeCEM** is a high-frequency computational electromagnetics (CEM) solver and Radar Cross Section (RCS) database generator. I built it specifically as the companion radar signature generator for **StrikeEngine**'s RF seekers.

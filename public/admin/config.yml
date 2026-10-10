@@ -24,9 +24,9 @@ collections:
       - { label: "Tags", name: "tags", widget: "list", default: [] }
       - { label: "Body", name: "body", widget: "markdown" }
 
-  - name: "project_overviews"
-    label: "Project Overviews"
-    label_singular: "Project Overview"
+  - name: "projects"
+    label: "Projects"
+    label_singular: "Project"
     folder: "src/content/projects"
     create: true
     delete: true
@@ -35,35 +35,12 @@ collections:
     editor:
       preview: true
     fields:
+      - { label: "Display Order", name: "order", widget: "number", value_type: "int", default: 1 }
       - { label: "Project Name", name: "name", widget: "string" }
       - { label: "Tagline", name: "tagline", widget: "string" }
+      - { label: "Card Short Description", name: "description", widget: "text", required: false }
       - { label: "Icon Path", name: "icon", widget: "string", default: "/favicon.svg" }
       - { label: "Repository URL", name: "repo", widget: "string" }
       - { label: "Related Blog Post Slug", name: "blogSlug", widget: "string", required: false }
       - { label: "Tags", name: "tags", widget: "list", default: [] }
       - { label: "Overview Body", name: "body", widget: "markdown" }
-
-  - name: "projects_section"
-    label: "Homepage Project Cards"
-    files:
-      - name: "projects_file"
-        label: "Manage Cards"
-        file: "src/data/projects.json"
-        format: "json"
-        fields:
-          - name: "projects"
-            label: "Projects List"
-            widget: "list"
-            summary: "{{fields.name}}"
-            fields:
-              - { label: "Project Name", name: "name", widget: "string" }
-              - { label: "Icon Path", name: "icon", widget: "string", required: false }
-              - { label: "Description", name: "description", widget: "text" }
-              - { label: "Tags", name: "tags", widget: "list", default: [] }
-              - label: "Links"
-                name: "links"
-                widget: "list"
-                summary: "{{fields.label}}: {{fields.url}}"
-                fields:
-                  - { label: "Label", name: "label", widget: "string", default: "Code" }
-                  - { label: "URL", name: "url", widget: "string" }

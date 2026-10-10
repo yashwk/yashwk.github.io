@@ -18,10 +18,12 @@ const projects = defineCollection({
   schema: z.object({
     name: z.string(),
     tagline: z.string(),
+    description: z.string().optional(),
     icon: z.string().default('/favicon.svg'),
     repo: z.string(),
     blogSlug: z.string().optional(),
     tags: z.array(z.string()).default([]),
+    order: z.number().default(0),
   }),
 });
 

@@ -1,10 +1,12 @@
 ---
 name: "libxtm"
 tagline: "Geospatial terrain compression library & CLI with random-access ROI decoding"
+description: "A C++20 geospatial terrain compression library and CLI featuring adaptive predictive coding, quadtree partitioning, and random-access Region-of-Interest decoding."
 icon: "/icons/libxtm.svg"
 repo: "https://github.com/yashwk/libxtm"
 blogSlug: "terrain-compression-in-libxtm"
 tags: ["Geospatial Compression", "C++20", "GDAL", "Quadtree", "Python / nanobind", "Terrain Elevation"]
+order: 3
 ---
 
 **libxtm** is a specialized C++20 geospatial compression library and command-line utility for digital elevation models (DEMs) and terrain data. It provides a custom `.xtm` container format designed for high compression ratios and random-access Region-of-Interest (ROI) decoding.
