@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { projectsDetail, type ProjectDetail } from '../../data/projects-detail';
+
+export function getStaticPaths() {
+  return Object.values(projectsDetail).map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: ProjectDetail;
+}
+
+const { project } = Astro.props;
+
+// Other projects for bottom cross-links
+const otherProjects = Object.values(projectsDetail).filter((p) => p.slug !== project.slug);
+---
+
+<BaseLayout
+  title={`${project.name} - Technical Architecture`}
+  description={project.tagline}
+  showProgress={true}
+>
+  <nav style="margin-bottom: 2rem;">
+    <a href="/">&larr; Back to home</a>
+  </nav>
+
+  <header class="project-detail-hero">
+    <img
+      src={project.icon}
+      alt={`${project.name} Logo`}
+      class="project-hero-icon"
+      width="72"
+      height="72"
+      loading="eager"
+    />
+    <div class="project-hero-content">
+      <h1 class="project-hero-title">{project.name}</h1>
+      <p class="project-hero-tagline">{project.tagline}</p>
+      <div class="project-hero-actions">
+        <a href={project.repo} target="_blank" rel="noopener noreferrer" class="btn-primary">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          View Repository
+        </a>
+        {project.blogSlug && (
+          <a href={`/blog/${project.blogSlug}/`} class="btn-secondary">
+            Read Technical Article &rarr;
+          </a>
+        )}
+      </div>
+    </div>
+  </header>
+
+  <section style="margin-bottom: 2rem;">
+    <div class="spec-grid">
+      {Object.entries(project.metrics).map(([label, value]) => (
+        <div class="spec-card">
+          <div class="spec-card-label">{label}</div>
+          <div class="spec-card-value">{value}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <article class="prose">
+    <h2>Project Overview</h2>
+    {project.overview.split('\n\n').map((paragraph) => (
+      <p>{paragraph}</p>
+    ))}
+
+    <h2>System Architecture & Data Flow</h2>
+    <p>
+      The high-level execution pipeline and dataflow across subsystem components:
+    </p>
+    <pre class="architecture-diagram"><code>{project.architectureDiagram}</code></pre>
+
+    <h2>Key Technical Capabilities</h2>
+    <ul style="list-style: none; padding-left: 0; display: flex; flex-direction: column; gap: 1rem;">
+      {project.keyFeatures.map((feat) => (
+        <li style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem;">
+          <strong style="color: var(--accent); display: block; font-size: 1rem; margin-bottom: 0.35rem;">
+            {feat.title}
+          </strong>
+          <span style="color: var(--text); line-height: 1.6;">{feat.desc}</span>
+        </li>
+      ))}
+    </ul>
+
+    {project.mathematicalFoundations && (
+      <>
+        <h2>Mathematical Foundations</h2>
+        <ul style="list-style: none; padding-left: 0; display: flex; flex-direction: column; gap: 0.75rem;">
+          {project.mathematicalFoundations.map((math) => (
+            <li style="background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem 1rem; font-family: var(--font-mono); font-size: 0.88rem; color: #f08d49;">
+              {math}
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+
+    <h2>Technology Stack & Standards</h2>
+    <ul class="tags-list" style="margin-top: 1rem; margin-bottom: 2rem;">
+      {project.techStack.map((tech) => (
+        <li class="tag" style="font-size: 0.85rem; padding: 0.25rem 0.75rem;">{tech}</li>
+      ))}
+    </ul>
+
+    <nav style="margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <a href="/">&larr; Back to all projects</a>
+      <div style="display: flex; gap: 1rem; align-items: center; font-size: 0.88rem;">
+        <span style="color: var(--text-dim);">Other Projects:</span>
+        {otherProjects.map((p) => (
+          <a href={`/projects/${p.slug}/`} style="color: var(--accent); text-decoration: none;">
+            {p.name}
+          </a>
+        ))}
+      </div>
+    </nav>
+  </article>
+</BaseLayout>

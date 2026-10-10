@@ -1,15 +1,18 @@
 ---
 import '../styles/global.css';
 import 'katex/dist/katex.min.css';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title?: string;
   description?: string;
+  showProgress?: boolean;
 }
 
 const {
   title = "Yashwanth",
-  description = "Studying Computer Science. Interested in software engineering, computer systems, and machine learning."
+  description = "Studying Computer Science. Interested in software engineering, computer systems, and machine learning.",
+  showProgress = false
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -22,6 +25,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
     <title>{title === "Yashwanth" ? title : `${title} | Yashwanth`}</title>
     <meta name="description" content={description} />
@@ -29,11 +33,73 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:type" content="website" />
+    <ClientRouter />
   </head>
   <body>
+    {showProgress && <div id="reading-progress" aria-hidden="true" />}
     <slot />
     <footer>
       <p>© {new Date().getFullYear()} Yashwanth · <a href="/rss.xml">rss</a></p>
     </footer>
+
+    <script>
+      function setupCodeCopyButtons() {
+        const preBlocks = document.querySelectorAll('.prose pre');
+        preBlocks.forEach((pre) => {
+          if (pre.querySelector('.code-copy-btn')) return;
+
+          const code = pre.querySelector('code');
+          if (!code) return;
+
+          const btn = document.createElement('button');
+          btn.className = 'code-copy-btn';
+          btn.type = 'button';
+          btn.setAttribute('aria-label', 'Copy code to clipboard');
+          btn.innerHTML = `<svg class="copy-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg><span class="copy-text">copy</span>`;
+
+          btn.addEventListener('click', async () => {
+            try {
+              const textToCopy = code.innerText;
+              await navigator.clipboard.writeText(textToCopy);
+              btn.classList.add('copied');
+              btn.innerHTML = `<svg class="check-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="copy-text">copied!</span>`;
+              setTimeout(() => {
+                btn.classList.remove('copied');
+                btn.innerHTML = `<svg class="copy-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg><span class="copy-text">copy</span>`;
+              }, 2000);
+            } catch (err) {
+              console.error('Failed to copy code snippet', err);
+            }
+          });
+
+          pre.appendChild(btn);
+        });
+      }
+
+      function setupReadingProgress() {
+        const progressBar = document.getElementById('reading-progress');
+        if (!progressBar) return;
+
+        function updateProgress() {
+          if (!progressBar) return;
+          const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+          if (totalHeight <= 0) {
+            progressBar.style.width = '0%';
+            return;
+          }
+          const scrollPos = window.scrollY;
+          const progressPercent = Math.min(100, Math.max(0, (scrollPos / totalHeight) * 100));
+          progressBar.style.width = `${progressPercent}%`;
+        }
+
+        window.addEventListener('scroll', updateProgress, { passive: true });
+        updateProgress();
+      }
+
+      document.addEventListener('astro:page-load', () => {
+        setupCodeCopyButtons();
+        setupReadingProgress();
+      });
+    </script>
   </body>
 </html>

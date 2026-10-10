@@ -42,9 +42,20 @@ function formatDate(date: Date) {
               {project.icon && (
                 <img src={project.icon} alt="" class="project-icon" width="28" height="28" loading="lazy" />
               )}
-              <h3 class="project-title">{project.name}</h3>
+              <h3 class="project-title">
+                <a href={`/projects/${project.name.toLowerCase()}/`} class="project-title-link">
+                  {project.name}
+                </a>
+              </h3>
             </div>
             <div class="project-links">
+              <a
+                href={`/projects/${project.name.toLowerCase()}/`}
+                class="project-overview-link"
+                title={`View ${project.name} technical overview`}
+              >
+                Overview &rarr;
+              </a>
               {project.links.map((link) => {
                 const isGitHub =
                   link.label.toLowerCase() === 'github' ||
