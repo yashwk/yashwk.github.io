@@ -562,210 +562,74 @@ h2::before {
   color: #ffffff;
 }
 
-.architecture-diagram {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin: 1.5rem 0;
-  font-family: var(--font-mono);
-  font-size: 0.84rem;
-  line-height: 1.45;
-  color: #79c0ff;
-  overflow-x: auto;
+.project-prose h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.85rem;
 }
 
-.spec-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0;
-}
-
-.spec-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 1rem;
-}
-
-.spec-card-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-dim);
-  margin-bottom: 0.35rem;
-}
-
-.spec-card-value {
-  font-size: 1.05rem;
-  font-weight: 600;
+.project-prose h3 {
+  margin-top: 1.75rem;
+  margin-bottom: 0.65rem;
   color: var(--accent);
 }
 
-.project-nav-link {
-  color: var(--text-muted);
+.project-detail-footer {
+  margin-top: 3.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.project-tags-section {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.project-tags-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+}
+
+.project-bottom-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.project-bottom-nav a {
+  color: var(--accent);
   text-decoration: none;
   font-size: 0.9rem;
   transition: color 0.15s ease;
 }
 
-.project-nav-link:hover {
-  color: var(--accent);
+.project-bottom-nav a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
 }
 
-/* Problem Section */
-.problem-points {
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-  margin: 1.25rem 0 2rem 0;
-}
-
-.problem-point-card {
-  background: rgba(248, 113, 113, 0.04);
-  border: 1px solid rgba(248, 113, 113, 0.18);
-  border-left: 3px solid #f87171;
-  border-radius: 6px;
-  padding: 1rem 1.25rem;
-}
-
-.problem-point-card strong {
-  display: block;
-  color: #fca5a5;
-  font-size: 0.95rem;
-  margin-bottom: 0.35rem;
-}
-
-.problem-point-card p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  line-height: 1.55;
-}
-
-/* Pipeline Steps */
-.project-pipeline-list {
-  list-style: none;
-  padding: 0;
-  margin: 1.5rem 0 2rem 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-}
-
-.pipeline-step-item {
+.other-projects-links {
   display: flex;
   gap: 1rem;
-  align-items: flex-start;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 1rem 1.25rem;
+  align-items: center;
+  font-size: 0.88rem;
 }
 
-.pipeline-step-num {
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  font-weight: 700;
+.other-projects-links a {
   color: var(--accent);
-  background: rgba(56, 189, 248, 0.1);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  padding: 0.25rem 0.55rem;
-  border-radius: 4px;
-  white-space: nowrap;
+  text-decoration: none;
 }
 
-.pipeline-step-content strong {
-  display: block;
-  color: #ffffff;
-  font-size: 0.95rem;
-  margin-bottom: 0.3rem;
-}
-
-.pipeline-step-content p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  line-height: 1.55;
-}
-
-/* Key Technical Innovations */
-.key-features-list {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-  margin: 1.25rem 0 2rem 0;
-}
-
-.key-feature-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 1rem 1.25rem;
-}
-
-.key-feature-card strong {
-  color: var(--accent);
-  display: block;
-  font-size: 0.98rem;
-  margin-bottom: 0.35rem;
-}
-
-.key-feature-card span {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  line-height: 1.55;
-}
-
-/* Mathematical Foundations */
-.math-foundations-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin: 1.25rem 0 2rem 0;
-}
-
-.math-foundation-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 1.1rem 1.25rem;
-}
-
-.math-foundation-title {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #ffffff;
-  margin-bottom: 0.5rem;
-}
-
-.math-foundation-formula {
-  background: var(--code-bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 0.65rem 0.9rem;
-  font-family: var(--font-mono);
-  font-size: 0.86rem;
-  color: #f08d49;
-  overflow-x: auto;
-  margin: 0 0 0.6rem 0;
-}
-
-.math-foundation-formula code {
-  color: inherit;
-  background: transparent;
-  padding: 0;
-  border: none;
-}
-
-.math-foundation-desc {
-  font-size: 0.875rem;
-  color: var(--text-muted);
-  line-height: 1.55;
-  margin: 0;
+.other-projects-links a:hover {
+  text-decoration: underline;
 }
 
 @media (max-width: 600px) {

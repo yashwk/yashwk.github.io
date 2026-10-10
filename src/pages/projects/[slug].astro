@@ -20,7 +20,7 @@ const otherProjects = Object.values(projectsDetail).filter((p) => p.slug !== pro
 ---
 
 <BaseLayout
-  title={`${project.name} - Technical Overview`}
+  title={`${project.name} - Project Overview`}
   description={project.tagline}
   image={`/og/project-${project.slug}.png`}
   showProgress={true}
@@ -34,8 +34,8 @@ const otherProjects = Object.values(projectsDetail).filter((p) => p.slug !== pro
       src={project.icon}
       alt={`${project.name} Logo`}
       class="project-hero-icon"
-      width="72"
-      height="72"
+      width="64"
+      height="64"
       loading="eager"
     />
     <div class="project-hero-content">
@@ -46,107 +46,37 @@ const otherProjects = Object.values(projectsDetail).filter((p) => p.slug !== pro
           <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
             <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
           </svg>
-          View Repository
+          View on GitHub
         </a>
         {project.blogSlug && (
           <a href={`/blog/${project.blogSlug}/`} class="btn-secondary">
-            Read Deep-Dive Article &rarr;
+            Read Blog Post &rarr;
           </a>
         )}
       </div>
     </div>
   </header>
 
-  <section style="margin-bottom: 2.5rem;">
-    <div class="spec-grid">
-      {Object.entries(project.metrics).map(([label, value]) => (
-        <div class="spec-card">
-          <div class="spec-card-label">{label}</div>
-          <div class="spec-card-value">{value}</div>
-        </div>
-      ))}
-    </div>
-  </section>
+  <article class="prose project-prose" set:html={project.content} />
 
-  <article class="prose">
-    <h2>What is {project.name}?</h2>
-    {project.plainEnglishSummary.map((paragraph) => (
-      <p>{paragraph}</p>
-    ))}
-
-    <h2>The Problem: Why is this challenging?</h2>
-    <p>{project.theProblem.lead}</p>
-    <div class="problem-points">
-      {project.theProblem.points.map((point) => (
-        <div class="problem-point-card">
-          <strong>{point.title}</strong>
-          <p>{point.desc}</p>
-        </div>
-      ))}
+  <footer class="project-detail-footer">
+    <div class="project-tags-section">
+      <span class="project-tags-label">Technologies:</span>
+      <ul class="tags-list">
+        {project.tags.map((tag) => (
+          <li class="tag">{tag}</li>
+        ))}
+      </ul>
     </div>
 
-    <h2>How It Works: Step-by-Step Pipeline</h2>
-    <ol class="project-pipeline-list">
-      {project.howItWorks.map((item) => (
-        <li class="pipeline-step-item">
-          <span class="pipeline-step-num">{item.step}</span>
-          <div class="pipeline-step-content">
-            <strong>{item.title}</strong>
-            <p>{item.description}</p>
-          </div>
-        </li>
-      ))}
-    </ol>
-
-    <h2>System Architecture & Data Flow</h2>
-    <p>
-      The high-level execution pipeline and dataflow across subsystem components:
-    </p>
-    <pre class="architecture-diagram"><code>{project.architectureDiagram}</code></pre>
-
-    <h2>Key Technical Innovations</h2>
-    <ul class="key-features-list">
-      {project.keyFeatures.map((feat) => (
-        <li class="key-feature-card">
-          <strong>{feat.title}</strong>
-          <span>{feat.desc}</span>
-        </li>
-      ))}
-    </ul>
-
-    {project.mathematicalFoundations && (
-      <>
-        <h2>Mathematical Foundations</h2>
-        <p>The core physical laws and numerical methods formulated for computational efficiency:</p>
-        <div class="math-foundations-list">
-          {project.mathematicalFoundations.map((math) => (
-            <div class="math-foundation-card">
-              <div class="math-foundation-title">{math.title}</div>
-              <pre class="math-foundation-formula"><code>{math.formula}</code></pre>
-              <p class="math-foundation-desc">{math.explanation}</p>
-            </div>
-          ))}
-        </div>
-      </>
-    )}
-
-    <h2>Technology Stack & Standards</h2>
-    <ul class="tags-list" style="margin-top: 1rem; margin-bottom: 2rem;">
-      {project.techStack.map((tech) => (
-        <li class="tag" style="font-size: 0.85rem; padding: 0.25rem 0.75rem;">{tech}</li>
-      ))}
-    </ul>
-
-    <nav style="margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    <nav class="project-bottom-nav">
       <a href="/">&larr; Back to all projects</a>
-      <div style="display: flex; gap: 1rem; align-items: center; font-size: 0.88rem;">
+      <div class="other-projects-links">
         <span style="color: var(--text-dim);">Other Projects:</span>
         {otherProjects.map((p) => (
-          <a href={`/projects/${p.slug}/`} style="color: var(--accent); text-decoration: none;">
-            {p.name}
-          </a>
+          <a href={`/projects/${p.slug}/`}>{p.name}</a>
         ))}
       </div>
     </nav>
-  </article>
+  </footer>
 </BaseLayout>

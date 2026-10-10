@@ -3,8 +3,8 @@
     {
       "name": "StrikeEngine",
       "icon": "/icons/strikeengine.svg",
-      "description": "A high-performance C++20 flight physics engine simulating 6-DOF aircraft, rocket, and atmospheric dynamics at 50,000+ steps/sec with zero heap allocations.",
-      "tags": ["C++20", "Flight Dynamics", "Aerospace Simulation", "RK4"],
+      "description": "A data-oriented C++23 aerospace simulation engine and GNC framework for 6-DOF missile engagements, featuring Vulkan GPU compute and a live terminal telemetry cockpit.",
+      "tags": ["C++23", "Aerospace Simulation", "Vulkan Compute", "GNC", "Python"],
       "links": [
         { "label": "GitHub", "url": "https://github.com/yashwk/StrikeEngine" }
       ]
@@ -12,8 +12,8 @@
     {
       "name": "StrikeCEM",
       "icon": "/icons/strikecem.svg",
-      "description": "A high-speed radar signature simulator calculating stealth aircraft visibility (Radar Cross Section) in real time using Physical Optics and analytical Gordon integration.",
-      "tags": ["Computational Electromagnetics", "Radar Cross Section", "Physical Optics", "C++20"],
+      "description": "A Physical Optics radar cross-section (RCS) database generator in C++20/CUDA, computing high-frequency stealth signatures from 3D meshes for StrikeEngine.",
+      "tags": ["Computational Electromagnetics", "Physical Optics", "CUDA", "C++20", "HDF5"],
       "links": [
         { "label": "GitHub", "url": "https://github.com/yashwk/StrikeCEM" }
       ]
@@ -21,8 +21,8 @@
     {
       "name": "libxtm",
       "icon": "/icons/libxtm.svg",
-      "description": "An extreme 3D terrain elevation compression library for flight simulators, shrinking planetary heightmaps by up to 12:1 with sub-millisecond SIMD decoding.",
-      "tags": ["Terrain Compression", "SIMD", "Geospatial", "C/C++"],
+      "description": "A C++20 geospatial terrain compression library and CLI featuring adaptive predictive coding, quadtree partitioning, and random-access Region-of-Interest decoding.",
+      "tags": ["Geospatial Compression", "C++20", "GDAL", "Quadtree", "Python"],
       "links": [
         { "label": "GitHub", "url": "https://github.com/yashwk/libxtm" }
       ]
