@@ -1,28 +1,31 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { projectsDetail, type ProjectDetail } from '../../data/projects-detail';
+import { getCollection, render } from 'astro:content';
 
-export function getStaticPaths() {
-  return Object.values(projectsDetail).map((project) => ({
-    params: { slug: project.slug },
-    props: { project },
+export async function getStaticPaths() {
+  const allProjects = await getCollection('projects');
+  return allProjects.map((project) => ({
+    params: { slug: project.id },
+    props: { project, allProjects },
   }));
 }
 
 interface Props {
-  project: ProjectDetail;
+  project: any;
+  allProjects: any[];
 }
 
-const { project } = Astro.props;
+const { project, allProjects } = Astro.props;
+const { Content } = await render(project);
 
 // Other projects for bottom cross-links
-const otherProjects = Object.values(projectsDetail).filter((p) => p.slug !== project.slug);
+const otherProjects = allProjects.filter((p) => p.id !== project.id);
 ---
 
 <BaseLayout
-  title={`${project.name} - Project Overview`}
-  description={project.tagline}
-  image={`/og/project-${project.slug}.png`}
+  title={`${project.data.name} - Project Overview`}
+  description={project.data.tagline}
+  image={`/og/project-${project.id}.png`}
   showProgress={true}
 >
   <nav style="margin-bottom: 2rem;">
@@ -31,25 +34,25 @@ const otherProjects = Object.values(projectsDetail).filter((p) => p.slug !== pro
 
   <header class="project-detail-hero">
     <img
-      src={project.icon}
-      alt={`${project.name} Logo`}
+      src={project.data.icon}
+      alt={`${project.data.name} Logo`}
       class="project-hero-icon"
       width="64"
       height="64"
       loading="eager"
     />
     <div class="project-hero-content">
-      <h1 class="project-hero-title">{project.name}</h1>
-      <p class="project-hero-tagline">{project.tagline}</p>
+      <h1 class="project-hero-title">{project.data.name}</h1>
+      <p class="project-hero-tagline">{project.data.tagline}</p>
       <div class="project-hero-actions">
-        <a href={project.repo} target="_blank" rel="noopener noreferrer" class="btn-primary">
+        <a href={project.data.repo} target="_blank" rel="noopener noreferrer" class="btn-primary">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
             <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
           </svg>
           View on GitHub
         </a>
-        {project.blogSlug && (
-          <a href={`/blog/${project.blogSlug}/`} class="btn-secondary">
+        {project.data.blogSlug && (
+          <a href={`/blog/${project.data.blogSlug}/`} class="btn-secondary">
             Read Blog Post &rarr;
           </a>
         )}
@@ -57,13 +60,15 @@ const otherProjects = Object.values(projectsDetail).filter((p) => p.slug !== pro
     </div>
   </header>
 
-  <article class="prose project-prose" set:html={project.content} />
+  <article class="prose project-prose">
+    <Content />
+  </article>
 
   <footer class="project-detail-footer">
     <div class="project-tags-section">
       <span class="project-tags-label">Technologies:</span>
       <ul class="tags-list">
-        {project.tags.map((tag) => (
+        {project.data.tags.map((tag: string) => (
           <li class="tag">{tag}</li>
         ))}
       </ul>
@@ -74,7 +79,7 @@ const otherProjects = Object.values(projectsDetail).filter((p) => p.slug !== pro
       <div class="other-projects-links">
         <span style="color: var(--text-dim);">Other Projects:</span>
         {otherProjects.map((p) => (
-          <a href={`/projects/${p.slug}/`}>{p.name}</a>
+          <a href={`/projects/${p.id}/`}>{p.data.name}</a>
         ))}
       </div>
     </nav>

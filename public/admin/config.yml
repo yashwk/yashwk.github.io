@@ -24,11 +24,30 @@ collections:
       - { label: "Tags", name: "tags", widget: "list", default: [] }
       - { label: "Body", name: "body", widget: "markdown" }
 
+  - name: "project_overviews"
+    label: "Project Overviews"
+    label_singular: "Project Overview"
+    folder: "src/content/projects"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    format: "frontmatter"
+    editor:
+      preview: true
+    fields:
+      - { label: "Project Name", name: "name", widget: "string" }
+      - { label: "Tagline", name: "tagline", widget: "string" }
+      - { label: "Icon Path", name: "icon", widget: "string", default: "/favicon.svg" }
+      - { label: "Repository URL", name: "repo", widget: "string" }
+      - { label: "Related Blog Post Slug", name: "blogSlug", widget: "string", required: false }
+      - { label: "Tags", name: "tags", widget: "list", default: [] }
+      - { label: "Overview Body", name: "body", widget: "markdown" }
+
   - name: "projects_section"
-    label: "Projects"
+    label: "Homepage Project Cards"
     files:
       - name: "projects_file"
-        label: "Manage Projects"
+        label: "Manage Cards"
         file: "src/data/projects.json"
         format: "json"
         fields:
