@@ -4,6 +4,7 @@ import { getCollection, render } from 'astro:content';
 import TerminalCockpit from '../../components/TerminalCockpit.astro';
 import RcsPolarPlot from '../../components/RcsPolarPlot.astro';
 import TerrainCompressionSandbox from '../../components/TerrainCompressionSandbox.astro';
+import MoETierSimulator from '../../components/MoETierSimulator.astro';
 
 export async function getStaticPaths() {
   const allProjects = await getCollection('projects');
@@ -99,6 +100,18 @@ const otherProjects = allProjects.filter((p) => p.id !== project.id);
         Live testbench evaluating the 6 deterministic spatial predictors on 32×32 terrain tiles. Toggle quadtree subdivision, split-precision planes, and inspect residual Shannon entropy:
       </p>
       <TerrainCompressionSandbox />
+    </section>
+  )}
+
+  {project.id === 'mosaic' && (
+    <section style="margin: 2rem 0 2.5rem 0;">
+      <h2 style="font-size: 1.15rem; color: #ffffff; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span>Interactive MoE Tiered Memory Simulator</span>
+      </h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+        Live simulation of Qwen3.6-35B inference across NVMe disk, Linux page cache, C++ AVX2 SIMD executor, and GPU VRAM LRU cache:
+      </p>
+      <MoETierSimulator />
     </section>
   )}
 
