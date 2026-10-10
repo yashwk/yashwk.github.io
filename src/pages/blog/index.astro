@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
+);
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+}
+---
+
+<BaseLayout
+  title="Writing - Articles & Engineering Deep-Dives"
+  description="Technical articles on aerospace dynamics, computational electromagnetics, and geospatial compression."
+>
+  <nav style="margin-bottom: 2rem;">
+    <a href="/">&larr; Back to home</a>
+  </nav>
+
+  <header style="margin-bottom: 2.5rem;">
+    <h1 style="font-size: 2rem; font-weight: 700; color: #ffffff; margin-bottom: 0.5rem;">
+      Writing
+    </h1>
+    <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.5;">
+      Deep-dives on aerospace simulation, computational electromagnetics, and systems engineering.
+    </p>
+  </header>
+
+  <ul class="posts-list">
+    {sortedPosts.map((post) => (
+      <li class="post-item">
+        <div class="post-top">
+          <a href={`/blog/${post.id}/`} class="post-title-link">
+            {post.data.title}
+          </a>
+          <time datetime={post.data.pubDate.toISOString()} class="post-date">
+            {formatDate(post.data.pubDate)}
+          </time>
+        </div>
+        <p class="post-summary">{post.data.description}</p>
+        {post.data.tags.length > 0 && (
+          <ul class="tags-list" style="margin-top: 0.35rem;">
+            {post.data.tags.map((tag: string) => (
+              <li class="tag">{tag}</li>
+            ))}
+          </ul>
+        )}
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

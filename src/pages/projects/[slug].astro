@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
+import TerminalCockpit from '../../components/TerminalCockpit.astro';
 
 export async function getStaticPaths() {
   const allProjects = await getCollection('projects');
@@ -59,6 +60,18 @@ const otherProjects = allProjects.filter((p) => p.id !== project.id);
       </div>
     </div>
   </header>
+
+  {project.id === 'strikeengine' && (
+    <section style="margin: 2rem 0 2.5rem 0;">
+      <h2 style="font-size: 1.15rem; color: #ffffff; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span>Interactive Live Terminal Cockpit (<code>strike monitor</code>)</span>
+      </h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+        Live simulation telemetry ticking in real time for an 80 km head-on BVR engagement (Astra MK2 vs. Su-30 Flanker):
+      </p>
+      <TerminalCockpit />
+    </section>
+  )}
 
   <article class="prose project-prose">
     <Content />

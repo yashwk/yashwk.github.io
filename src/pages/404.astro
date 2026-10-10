@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="404 - Page Not Found"
+  description="The requested page could not be found."
+>
+  <div style="min-height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 2rem 0;">
+    <span style="font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent); background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 1rem;">
+      ERROR 404
+    </span>
+    <h1 style="font-size: 2.25rem; font-weight: 700; color: #ffffff; margin-bottom: 0.75rem;">
+      Page Not Found
+    </h1>
+    <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6; max-width: 520px; margin-bottom: 2rem;">
+      The requested trajectory or resource does not exist. It may have been moved, renamed, or deleted.
+    </p>
+
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+      <a href="/" class="btn-primary" style="padding: 0.55rem 1.1rem;">
+        &larr; Return to Home
+      </a>
+      <a href="/projects/" class="btn-secondary" style="padding: 0.55rem 1.1rem;">
+        Browse Projects
+      </a>
+      <a href="/blog/" class="btn-secondary" style="padding: 0.55rem 1.1rem;">
+        Read Writing
+      </a>
+    </div>
+  </div>
+</BaseLayout>

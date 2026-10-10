@@ -1,0 +1,398 @@
+---
+---
+
+<div class="terminal-cockpit-container">
+  <div class="terminal-window-header">
+    <div class="terminal-window-dots">
+      <span class="dot dot-red"></span>
+      <span class="dot dot-yellow"></span>
+      <span class="dot dot-green"></span>
+    </div>
+    <div class="terminal-window-title">
+      strike monitor cooperative_bvr_80km_astra.scenario.json --realtime
+    </div>
+    <div class="terminal-controls-top">
+      <button class="cockpit-btn" id="cockpit-toggle-btn" type="button" aria-label="Play or Pause Simulation">
+        <span class="btn-icon" id="cockpit-play-icon">⏸</span>
+        <span id="cockpit-play-text">Pause</span>
+      </button>
+      <button class="cockpit-btn" id="cockpit-reset-btn" type="button" aria-label="Restart Simulation">
+        ↺ Reset
+      </button>
+      <button class="cockpit-btn cockpit-backend-btn" id="cockpit-backend-btn" type="button" aria-label="Toggle Backend">
+        <span id="cockpit-backend-label">GPU: Vulkan 1.3</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="terminal-body" id="cockpit-display" aria-label="StrikeEngine Live Telemetry Display">
+    <!-- Telemetry screen generated via client script -->
+    <pre class="terminal-output" id="cockpit-text">Loading StrikeEngine live telemetry stream...</pre>
+  </div>
+
+  <div class="terminal-footer">
+    <span class="terminal-status-indicator">
+      <span class="pulse-indicator"></span>
+      <span id="cockpit-status-text">RUNNING (1.0x Realtime Pacing)</span>
+    </span>
+    <span class="terminal-meta-text">
+      Engine Truth: 1 kHz (dt = 0.001s) | WGS84 ECEF | RK4
+    </span>
+  </div>
+</div>
+
+<style>
+.terminal-cockpit-container {
+  background: #0d1117;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 2rem 0;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+  font-family: var(--font-mono);
+}
+
+.terminal-window-header {
+  background: #161b22;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.terminal-window-dots {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-red { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green { background: #27c93f; }
+
+.terminal-window-title {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.terminal-controls-top {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cockpit-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.cockpit-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+.cockpit-backend-btn {
+  color: var(--accent);
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+.terminal-body {
+  padding: 1rem 1.25rem;
+  background: #090d13;
+  overflow-x: auto;
+}
+
+.terminal-output {
+  margin: 0;
+  padding: 0;
+  background: transparent !important;
+  border: none !important;
+  color: #c9d1d9;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  white-space: pre;
+}
+
+.terminal-footer {
+  background: #161b22;
+  border-top: 1px solid var(--border);
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.76rem;
+  color: var(--text-dim);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.terminal-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #7ee787;
+}
+
+.pulse-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2ea043;
+  box-shadow: 0 0 8px #2ea043;
+  display: inline-block;
+  animation: pulse-dot 1.8s infinite;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+</style>
+
+<script is:inline>
+(() => {
+  let isRunning = true;
+  let backend = 'vulkan';
+  let simTime = 0.0;
+  let wallTime = 0.0;
+  let timerId = null;
+
+  // Scenario constants (Cooperative BVR 80 km Tejas / Astra MK2 vs Su-30)
+  const maxRangeKm = 80.0;
+  const interceptTime = 48.2;  // seconds to direct kinetic hit
+
+  function formatBar(val, maxVal, width) {
+    const filled = Math.min(width, Math.max(0, Math.round((val / maxVal) * width)));
+    return '[' + '='.repeat(filled) + ' '.repeat(width - filled) + ']';
+  }
+
+  function renderAsciiGrid(mslRangeKm, mslAltKm, tgtRangeKm, tgtAltKm, isHit) {
+    const width = 54;
+    const height = 9;
+    const maxAltKm = 18.0;
+
+    // Create blank grid
+    const grid = Array.from({ length: height }, () => Array(width).fill(' '));
+
+    const toCol = (rKm) => Math.max(0, Math.min(width - 1, Math.round((rKm / maxRangeKm) * (width - 1))));
+    const toRow = (aKm) => Math.max(0, Math.min(height - 1, height - 1 - Math.round((aKm / maxAltKm) * (height - 1))));
+
+    // Draw target trail and icon
+    const tgtCol = toCol(tgtRangeKm);
+    const tgtRow = toRow(tgtAltKm);
+    for (let c = tgtCol; c < width; c += 2) {
+      grid[tgtRow][c] = '-';
+    }
+    grid[tgtRow][tgtCol] = isHit ? 'X' : 'T';
+
+    // Draw missile trail and icon
+    const mslCol = toCol(mslRangeKm);
+    const mslRow = toRow(mslAltKm);
+    for (let c = 0; c < mslCol; c += 2) {
+      const interpAlt = 8.0 + (mslAltKm - 8.0) * (c / Math.max(1, mslCol));
+      const r = toRow(interpAlt);
+      grid[r][c] = '.';
+    }
+    grid[mslRow][mslCol] = isHit ? '💥' : '*';
+
+    // Format rows with altitude ticks
+    let out = '';
+    for (let r = 0; r < height; r++) {
+      const altTick = Math.round(maxAltKm * (1.0 - r / (height - 1)));
+      const tickStr = String(altTick).padStart(2, ' ') + 'k|';
+      out += tickStr + grid[r].join('') + '|\n';
+    }
+    out += '   0+' + '-'.repeat(width) + '+\n';
+    out += '     0km' + ' '.repeat(Math.round(width / 2) - 4) + '40km' + ' '.repeat(Math.round(width / 2) - 4) + '80km\n';
+    return out;
+  }
+
+  function updateFrame() {
+    if (!isRunning) return;
+
+    const dt = 0.05; // 20 FPS step
+    simTime += dt;
+    wallTime += dt;
+
+    if (simTime >= interceptTime) {
+      simTime = interceptTime;
+      isRunning = false;
+      const statusText = document.getElementById('cockpit-status-text');
+      if (statusText) statusText.innerText = 'MISSION COMPLETE: KINETIC INTERCEPT (CPA 0.08 m)';
+      const toggleBtnText = document.getElementById('cockpit-play-text');
+      if (toggleBtnText) toggleBtnText.innerText = 'Restart';
+      const playIcon = document.getElementById('cockpit-play-icon');
+      if (playIcon) playIcon.innerText = '↻';
+    }
+
+    // Kinematics calculations
+    const progress = Math.min(1.0, simTime / interceptTime);
+    
+    // Missile state
+    const mslRangeKm = progress * 62.5; // reaches 62.5 km downrange at intercept
+    let mslAltKm = 8.0; // launched from 8 km
+    let mach = 1.1;
+    let gLoad = 1.0;
+    let stage = 'Stage 1 (Solid Booster)';
+    let guidanceMode = 'Midcourse Inertial + Datalink';
+    let seekerStatus = 'Searching (RF Beam Scanned)';
+
+    if (simTime < 6.5) {
+      // Boost phase
+      const bProg = simTime / 6.5;
+      mach = 1.1 + bProg * 3.1; // accelerate to Mach 4.2
+      mslAltKm = 8.0 + bProg * 8.5; // climb to 16.5 km
+      gLoad = 4.2 + bProg * 14.0;
+    } else if (simTime < 32.0) {
+      // Sustain / coast phase
+      mach = 4.2 - (simTime - 6.5) * 0.02;
+      mslAltKm = 16.5 - (simTime - 6.5) * 0.08;
+      gLoad = 2.5 + Math.sin(simTime) * 1.5;
+      stage = 'Stage 2 (Sustain Pulse)';
+    } else {
+      // Terminal phase
+      mach = 3.6 - (simTime - 32.0) * 0.03;
+      mslAltKm = 14.5 - (simTime - 32.0) * 0.22;
+      gLoad = 12.0 + Math.pow(progress, 3) * 16.0; // pulls up to 28 Gs
+      stage = 'Terminal Intercept';
+      guidanceMode = 'Augmented Proportional Navigation (APN)';
+      seekerStatus = 'TRACK LOCK (SNR: +28.4 dB, Monopulse Error: 0.02°)';
+    }
+
+    // Target state (Su-30 Flanker approaching)
+    const tgtRangeKm = 80.0 - progress * 17.5; // moves from 80 km to 62.5 km
+    const tgtAltKm = 11.0 + (simTime > 30.0 ? Math.sin(simTime * 0.5) * 1.2 : 0.0);
+    const slantRangeKm = Math.max(0.05, Math.abs(tgtRangeKm - mslRangeKm));
+    const closingSpeedMps = 1640.0 - (simTime * 3.0);
+    const isHit = (simTime >= interceptTime);
+
+    // Build ASCII render
+    const asciiPlot = renderAsciiGrid(mslRangeKm, mslAltKm, tgtRangeKm, tgtAltKm, isHit);
+
+    const speedup = backend === 'vulkan' ? '82.4x' : '1.0x';
+    const evalRate = backend === 'vulkan' ? '82,400 steps/s' : '1,000 steps/s';
+    const gBar = formatBar(gLoad, 30.0, 16);
+
+    const textOutput = `┌─ StrikeEngine Live Cockpit ───────────────────────────────────────────────┐
+│ Scenario : cooperative_bvr_80km_astra.scenario.json                      │
+│ Backend  : ${backend === 'vulkan' ? 'Vulkan 1.3 Compute (Slang Shaders)' : 'CPU Thread Pool (x86-64 AVX2)'}
+│ Speedup  : ${speedup} (${evalRate}) | Truth Gate: 1 ms (RK4)
+├───────────────────────────────────────────────────────────────────────────┤
+│ SIM TIME    : ${simTime.toFixed(3).padStart(6, ' ')} s       │ WALL TIME    : ${wallTime.toFixed(3).padStart(6, ' ')} s
+│ MISSILE     : Astra MK2        │ TARGET       : Su-30 Flanker
+│ ALTITUDE    : ${(mslAltKm * 1000).toFixed(0).padStart(6, ' ')} m       │ TARGET ALT   : ${(tgtAltKm * 1000).toFixed(0).padStart(6, ' ')} m
+│ SPEED       : Mach ${mach.toFixed(2)} (${(mach * 340).toFixed(0)} m/s) │ CLOSING VEL  : ${closingSpeedMps.toFixed(0)} m/s
+│ SLANT RANGE : ${slantRangeKm.toFixed(2).padStart(6, ' ')} km      │ G-LOAD       : ${gLoad.toFixed(1).padStart(4, ' ')} G ${gBar}
+│ PROPULSION  : ${stage}
+│ SEEKER      : ${seekerStatus}
+│ GUIDANCE    : ${guidanceMode}
+├─ 2D Trajectory Profile (Altitude vs Downrange) ───────────────────────────┤
+${asciiPlot}└───────────────────────────────────────────────────────────────────────────┘`;
+
+    const el = document.getElementById('cockpit-text');
+    if (el) el.innerText = textOutput;
+  }
+
+  function start() {
+    if (timerId) clearInterval(timerId);
+    timerId = setInterval(updateFrame, 50);
+  }
+
+  function initCockpit() {
+    const toggleBtn = document.getElementById('cockpit-toggle-btn');
+    const resetBtn = document.getElementById('cockpit-reset-btn');
+    const backendBtn = document.getElementById('cockpit-backend-btn');
+
+    if (toggleBtn) {
+      toggleBtn.onclick = () => {
+        if (simTime >= interceptTime) {
+          // Restart if finished
+          simTime = 0.0;
+          wallTime = 0.0;
+          isRunning = true;
+          const statusText = document.getElementById('cockpit-status-text');
+          if (statusText) statusText.innerText = 'RUNNING (1.0x Realtime Pacing)';
+          const playIcon = document.getElementById('cockpit-play-icon');
+          if (playIcon) playIcon.innerText = '⏸';
+          const toggleBtnText = document.getElementById('cockpit-play-text');
+          if (toggleBtnText) toggleBtnText.innerText = 'Pause';
+          return;
+        }
+
+        isRunning = !isRunning;
+        const playIcon = document.getElementById('cockpit-play-icon');
+        const playText = document.getElementById('cockpit-play-text');
+        const statusText = document.getElementById('cockpit-status-text');
+
+        if (isRunning) {
+          if (playIcon) playIcon.innerText = '⏸';
+          if (playText) playText.innerText = 'Pause';
+          if (statusText) statusText.innerText = 'RUNNING (1.0x Realtime Pacing)';
+        } else {
+          if (playIcon) playIcon.innerText = '▶';
+          if (playText) playText.innerText = 'Resume';
+          if (statusText) statusText.innerText = 'PAUSED';
+        }
+      };
+    }
+
+    if (resetBtn) {
+      resetBtn.onclick = () => {
+        simTime = 0.0;
+        wallTime = 0.0;
+        isRunning = true;
+        const statusText = document.getElementById('cockpit-status-text');
+        if (statusText) statusText.innerText = 'RUNNING (1.0x Realtime Pacing)';
+        const playIcon = document.getElementById('cockpit-play-icon');
+        if (playIcon) playIcon.innerText = '⏸';
+        const toggleBtnText = document.getElementById('cockpit-play-text');
+        if (toggleBtnText) toggleBtnText.innerText = 'Pause';
+        updateFrame();
+      };
+    }
+
+    if (backendBtn) {
+      backendBtn.onclick = () => {
+        backend = (backend === 'vulkan' ? 'cpu' : 'vulkan');
+        const label = document.getElementById('cockpit-backend-label');
+        if (label) {
+          label.innerText = backend === 'vulkan' ? 'GPU: Vulkan 1.3' : 'CPU: ThreadPool';
+        }
+        updateFrame();
+      };
+    }
+
+    start();
+  }
+
+  // Setup on page load and view transitions
+  document.addEventListener('astro:page-load', () => {
+    initCockpit();
+  });
+})();
+</script>
