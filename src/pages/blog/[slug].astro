@@ -22,7 +22,12 @@ function formatDate(date: Date) {
 }
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description} showProgress={true}>
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  image={`/og/${post.id}.png`}
+  showProgress={true}
+>
   <article class="prose">
     <nav style="margin-bottom: 2rem;">
       <a href="/">&larr; Back to home</a>

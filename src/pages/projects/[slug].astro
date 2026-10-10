@@ -22,6 +22,7 @@ const otherProjects = Object.values(projectsDetail).filter((p) => p.slug !== pro
 <BaseLayout
   title={`${project.name} - Technical Architecture`}
   description={project.tagline}
+  image={`/og/project-${project.slug}.png`}
   showProgress={true}
 >
   <nav style="margin-bottom: 2rem;">
