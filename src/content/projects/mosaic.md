@@ -4,6 +4,7 @@ tagline: "Local-first LLM inference engine running 35B MoE on 8 GB VRAM"
 description: "A lean inference engine and CLI running the Qwen3.6-35B MoE model on consumer 8 GB GPUs via tiered mmap streaming, C++ AVX2 expert execution, and GPU LRU caching."
 icon: "/icons/mosaic.svg"
 repo: "https://github.com/yashwk/mosaic"
+blogSlug: "running-35b-moe-on-8gb-vram-mosaic"
 tags: ["Machine Learning", "LLM Inference", "C++", "Python", "AVX2", "CUDA"]
 order: 4
 ---
