@@ -869,23 +869,23 @@ footer {
 /* ==========================================================================
    Astro View Transitions & Page Morphing
    ========================================================================== */
-/* Snappy page navigation crossfade without lingering snapshots */
+/* Page navigation crossfade */
 ::view-transition-old(root) {
-  animation-duration: 0.1s;
+  animation-duration: 0.16s;
   animation-timing-function: ease-out;
 }
 
 ::view-transition-new(root) {
-  animation-duration: 0.18s;
-  animation-timing-function: ease-in;
+  animation-duration: 0.36s;
+  animation-timing-function: ease-in-out;
 }
 
-/* Fast dissolve for outgoing title snapshots to prevent text ghosting */
+/* Smooth dissolve for outgoing title snapshots */
 ::view-transition-old(project-title-strikeengine),
 ::view-transition-old(project-title-strikecem),
 ::view-transition-old(project-title-libxtm),
 ::view-transition-old(project-title-mosaic) {
-  animation-duration: 0.08s;
+  animation-duration: 0.14s;
   animation-timing-function: ease-out;
 }
 
@@ -894,14 +894,14 @@ footer {
 ::view-transition-new(project-title-strikecem),
 ::view-transition-new(project-title-libxtm),
 ::view-transition-new(project-title-mosaic) {
-  animation-duration: 0.26s;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-duration: 0.45s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Smooth shared-element morphing for matched transition names (project icons and titles) */
+/* Perceptible, cinematic shared-element morphing for icons and titles */
 ::view-transition-group(*) {
-  animation-duration: 0.26s;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-duration: 0.45s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ==========================================================================
