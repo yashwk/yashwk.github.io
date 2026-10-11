@@ -29,6 +29,36 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Custom text highlight colors matching site accent */
+::selection {
+  background-color: rgba(88, 166, 255, 0.35);
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background-color: rgba(88, 166, 255, 0.35);
+  color: #ffffff;
+}
+
+pre ::selection,
+code ::selection {
+  background-color: rgba(88, 166, 255, 0.4);
+  color: inherit;
+}
+
+pre ::-moz-selection,
+code ::-moz-selection {
+  background-color: rgba(88, 166, 255, 0.4);
+  color: inherit;
+}
+
+mark {
+  background-color: rgba(88, 166, 255, 0.2);
+  color: var(--accent-hover);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+
 body {
   font-family: var(--font-mono);
   font-weight: 400;
@@ -121,15 +151,37 @@ h2::before {
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 1.25rem 1.4rem;
-  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
   cursor: pointer;
+  overflow: hidden;
+}
+
+/* Mouse-following spotlight overlay */
+.project-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    360px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
+    rgba(88, 166, 255, 0.12),
+    transparent 65%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.project-card:hover::before {
+  opacity: 1;
 }
 
 .project-card:hover {
-  border-color: rgba(56, 189, 248, 0.4);
+  border-color: rgba(56, 189, 248, 0.45);
   background-color: var(--card-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px -4px rgba(0, 0, 0, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.45);
 }
 
 .project-card:focus-within {
@@ -138,6 +190,8 @@ h2::before {
 }
 
 .project-header {
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -158,16 +212,23 @@ h2::before {
   flex-shrink: 0;
   display: block;
   border-radius: 5px;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.project-card:hover .project-icon {
+  transform: scale(1.08);
 }
 
 .project-title {
   font-size: 1.1rem;
   font-weight: 600;
   color: #ffffff;
+  width: fit-content;
+  max-width: max-content;
 }
 
 .project-title-link {
-  color: #ffffff;
+  color: #ffffff !important;
   text-decoration: none;
   transition: color 0.15s ease;
 }
@@ -177,31 +238,35 @@ h2::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
   border-radius: 6px;
+  cursor: pointer;
 }
 
-.project-card:hover .project-title-link {
-  color: var(--accent);
+.project-card:hover .project-title-link,
+.project-card:active .project-title-link,
+.project-title-link:hover,
+.project-title-link:active {
+  color: #ffffff !important;
 }
 
 .project-overview-link {
   font-size: 0.82rem;
   color: var(--accent);
   text-decoration: none;
-  transition: color 0.15s ease, transform 0.15s ease;
+  transition: color 0.15s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: inline-flex;
   align-items: center;
 }
 
 .project-card:hover .project-overview-link {
   color: var(--accent-hover);
-  transform: translateX(3px);
+  transform: translateX(4px);
 }
 
 .project-links {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
@@ -210,7 +275,7 @@ h2::before {
 
 .project-links a {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -239,15 +304,18 @@ h2::before {
 }
 
 .project-desc {
+  position: relative;
+  z-index: 1;
   font-size: 0.925rem;
   color: var(--text-muted);
   line-height: 1.55;
   margin-bottom: 0.85rem;
+  pointer-events: none; /* Clicks pass right through to stretched link below */
 }
 
 .tags-list {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
@@ -263,6 +331,15 @@ h2::before {
   border-radius: 4px;
   color: var(--tag-text);
   letter-spacing: 0.02em;
+  display: inline-block;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.tag:hover {
+  transform: translateY(-2px);
+  border-color: rgba(88, 166, 255, 0.45);
+  background-color: #21262d;
+  color: #ffffff;
 }
 
 /* Blog / Writing Section */
@@ -275,21 +352,48 @@ h2::before {
 }
 
 .post-item {
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
   padding: 0.9rem 1rem;
   border-radius: 6px;
   border: 1px solid transparent;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+}
+
+/* Mouse-following spotlight overlay for post items */
+.post-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    320px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
+    rgba(88, 166, 255, 0.12),
+    transparent 65%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.post-item:hover::before {
+  opacity: 1;
 }
 
 .post-item:hover {
   background-color: var(--card-bg);
   border-color: var(--border);
+  transform: translateX(4px);
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.3);
 }
 
 .post-top {
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -314,6 +418,8 @@ h2::before {
 }
 
 .post-summary {
+  position: relative;
+  z-index: 1;
   font-size: 0.9rem;
   color: var(--text-muted);
   line-height: 1.5;
@@ -335,6 +441,12 @@ h2::before {
   font-size: 0.95rem;
 }
 
+@keyframes copyPop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.14); }
+  100% { transform: scale(1); }
+}
+
 .copy-btn {
   background-color: var(--card-bg);
   color: var(--text-muted);
@@ -344,7 +456,7 @@ h2::before {
   font-family: inherit;
   font-size: 0.78rem;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.15s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -353,12 +465,18 @@ h2::before {
 .copy-btn:hover {
   background-color: var(--border);
   color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.copy-btn:active {
+  transform: scale(0.94);
 }
 
 .copy-btn.copied {
   background-color: #1f432b;
   border-color: #2ea043;
   color: #7ee787;
+  animation: copyPop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* Prose for Blog Posts */
@@ -431,7 +549,7 @@ h2::before {
   font-family: inherit;
   color: var(--text-dim);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.15s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
   user-select: none;
   z-index: 5;
 }
@@ -440,12 +558,18 @@ h2::before {
   background: var(--border);
   color: #ffffff;
   border-color: #484f58;
+  transform: translateY(-1px);
+}
+
+.code-copy-btn:active {
+  transform: scale(0.94);
 }
 
 .code-copy-btn.copied {
   background: #1f432b;
   border-color: #2ea043;
   color: #7ee787;
+  animation: copyPop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .code-copy-btn svg {
@@ -505,8 +629,10 @@ h2::before {
 .project-hero-title {
   font-size: 1.85rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #ffffff !important;
   margin-bottom: 0.4rem;
+  width: fit-content;
+  max-width: max-content;
 }
 
 .project-hero-tagline {
@@ -534,12 +660,17 @@ h2::before {
   font-size: 0.85rem;
   font-weight: 500;
   text-decoration: none;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .btn-primary:hover {
   background-color: #2ea043;
   color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
 }
 
 .btn-secondary {
@@ -554,12 +685,17 @@ h2::before {
   font-size: 0.85rem;
   font-weight: 500;
   text-decoration: none;
-  transition: all 0.15s ease;
+  transition: all 0.15s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .btn-secondary:hover {
   background-color: var(--border);
   color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
 }
 
 .project-prose h2 {
@@ -730,4 +866,105 @@ footer {
   text-align: center;
   font-size: 0.85rem;
   color: var(--text-dim);
+}
+
+/* ==========================================================================
+   Astro View Transitions & Page Morphing
+   ========================================================================== */
+/* Snappy page navigation crossfade without lingering snapshots */
+::view-transition-old(root) {
+  animation-duration: 0.1s;
+  animation-timing-function: ease-out;
+}
+
+::view-transition-new(root) {
+  animation-duration: 0.18s;
+  animation-timing-function: ease-in;
+}
+
+/* Fast dissolve for outgoing title snapshots to prevent text ghosting */
+::view-transition-old(project-title-strikeengine),
+::view-transition-old(project-title-strikecem),
+::view-transition-old(project-title-libxtm),
+::view-transition-old(project-title-mosaic) {
+  animation-duration: 0.08s;
+  animation-timing-function: ease-out;
+}
+
+/* Crisp arrival of incoming title snapshot */
+::view-transition-new(project-title-strikeengine),
+::view-transition-new(project-title-strikecem),
+::view-transition-new(project-title-libxtm),
+::view-transition-new(project-title-mosaic) {
+  animation-duration: 0.26s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Smooth shared-element morphing for matched transition names (project icons and titles) */
+::view-transition-group(*) {
+  animation-duration: 0.26s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   Scroll-Driven Staggered Entry Reveals
+   ========================================================================== */
+@keyframes scrollRevealFade {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Page entrance staggered reveals (runs smoothly on initial mount) */
+.projects-grid .project-card,
+.posts-list .post-item {
+  animation: scrollRevealFade 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.projects-grid .project-card:nth-child(1) { animation-delay: 0.04s; }
+.projects-grid .project-card:nth-child(2) { animation-delay: 0.09s; }
+.projects-grid .project-card:nth-child(3) { animation-delay: 0.14s; }
+.projects-grid .project-card:nth-child(4) { animation-delay: 0.19s; }
+.projects-grid .project-card:nth-child(5) { animation-delay: 0.24s; }
+
+.posts-list .post-item:nth-child(1) { animation-delay: 0.04s; }
+.posts-list .post-item:nth-child(2) { animation-delay: 0.09s; }
+.posts-list .post-item:nth-child(3) { animation-delay: 0.14s; }
+.posts-list .post-item:nth-child(4) { animation-delay: 0.19s; }
+.posts-list .post-item:nth-child(5) { animation-delay: 0.24s; }
+.posts-list .post-item:nth-child(6) { animation-delay: 0.29s; }
+
+/* Native Scroll-Driven Animations (Compositor Thread) when scrolled into view */
+@supports (animation-timeline: view()) {
+  .projects-grid .project-card,
+  .posts-list .post-item {
+    animation: scrollRevealFade linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 25%;
+  }
+}
+
+/* ==========================================================================
+   Accessibility & Motion Preferences
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }

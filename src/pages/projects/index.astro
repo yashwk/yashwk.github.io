@@ -25,17 +25,25 @@ const projects = rawProjects.sort(
   <div class="projects-grid">
     {projects.map((project) => (
       <article class="project-card">
-        <div class="project-header">
-          <div class="project-title-wrapper">
-            {project.data.icon && (
-              <img src={project.data.icon} alt="" class="project-icon" width="28" height="28" loading="lazy" />
-            )}
-            <h3 class="project-title">
-              <a href={`/projects/${project.id}/`} class="project-title-link">
-                {project.data.name}
-              </a>
-            </h3>
-          </div>
+          <div class="project-header">
+            <div class="project-title-wrapper">
+              {project.data.icon && (
+                <img
+                  src={project.data.icon}
+                  alt=""
+                  class="project-icon"
+                  width="28"
+                  height="28"
+                  loading="lazy"
+                  transition:name={`project-icon-${project.id}`}
+                />
+              )}
+              <h3 class="project-title" transition:name={`project-title-${project.id}`}>
+                <a href={`/projects/${project.id}/`} class="project-title-link">
+                  {project.data.name}
+                </a>
+              </h3>
+            </div>
           <div class="project-links">
             <a
               href={`/projects/${project.id}/`}

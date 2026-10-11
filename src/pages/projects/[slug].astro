@@ -50,9 +50,10 @@ const otherProjects = allProjects.filter((p) => p.id !== project.id);
       width="64"
       height="64"
       loading="eager"
+      transition:name={`project-icon-${project.id}`}
     />
     <div class="project-hero-content">
-      <h1 class="project-hero-title">{project.data.name}</h1>
+      <h1 class="project-hero-title" transition:name={`project-title-${project.id}`}>{project.data.name}</h1>
       <p class="project-hero-tagline">{project.data.tagline}</p>
       <div class="project-hero-actions">
         <a href={project.data.repo} target="_blank" rel="noopener noreferrer" class="btn-primary">

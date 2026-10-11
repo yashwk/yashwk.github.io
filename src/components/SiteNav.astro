@@ -125,6 +125,11 @@ const isBlog = currentPath.startsWith('/blog');
 .site-nav-link:hover {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
+}
+
+.site-nav-link:active {
+  transform: translateY(0);
 }
 
 .site-nav-link.active {

@@ -34,7 +34,10 @@ function formatDate(date: Date) {
     {sortedPosts.map((post) => (
       <li class="post-item">
         <div class="post-top">
-          <a href={`/blog/${post.id}/`} class="post-title-link">
+          <a
+            href={`/blog/${post.id}/`}
+            class="post-title-link"
+          >
             {post.data.title}
           </a>
           <time datetime={post.data.pubDate.toISOString()} class="post-date">

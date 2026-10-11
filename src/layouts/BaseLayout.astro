@@ -201,9 +201,42 @@ if (type === 'article' || (Astro.url.pathname.startsWith('/blog/') && Astro.url.
         updateProgress();
       }
 
+      function setupCardSpotlights() {
+        const cards = document.querySelectorAll('.project-card, .post-item');
+        cards.forEach((card) => {
+          card.addEventListener('mousemove', (e) => {
+            const rect = (card as HTMLElement).getBoundingClientRect();
+            const x = (e as MouseEvent).clientX - rect.left;
+            const y = (e as MouseEvent).clientY - rect.top;
+            (card as HTMLElement).style.setProperty('--mouse-x', `${x}px`);
+            (card as HTMLElement).style.setProperty('--mouse-y', `${y}px`);
+          }, { passive: true });
+          card.addEventListener('mouseleave', () => {
+            (card as HTMLElement).style.removeProperty('--mouse-x');
+            (card as HTMLElement).style.removeProperty('--mouse-y');
+          }, { passive: true });
+        });
+      }
+
+      function setupCardClickHandlers() {
+        const cards = document.querySelectorAll('.project-card');
+        cards.forEach((card) => {
+          card.addEventListener('click', (e) => {
+            // If user clicked the external github link or an external target, don't hijack
+            if ((e.target as HTMLElement).closest('.github-link, a[target="_blank"]')) return;
+            const link = card.querySelector('.project-title-link') as HTMLAnchorElement;
+            if (link && e.target !== link) {
+              link.click();
+            }
+          });
+        });
+      }
+
       document.addEventListener('astro:page-load', () => {
         setupCodeCopyButtons();
         setupReadingProgress();
+        setupCardSpotlights();
+        setupCardClickHandlers();
       });
     </script>
   </body>
