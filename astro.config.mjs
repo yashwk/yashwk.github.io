@@ -9,6 +9,10 @@ import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://yashwk.me',
+  compressHTML: true,
+  prefetch: {
+    defaultStrategy: 'hover',
+  },
   integrations: [
     mdx(),
     sitemap({
