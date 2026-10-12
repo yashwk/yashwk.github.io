@@ -20,6 +20,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -93,7 +94,7 @@ header {
 }
 
 header h1 {
-  font-size: 1.85rem;
+  font-size: clamp(1.5rem, 1.25rem + 1.4vw, 1.85rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: #ffffff;
@@ -171,15 +172,32 @@ h2::before {
   z-index: 0;
 }
 
-.project-card:hover::before {
-  opacity: 1;
+.project-card:active {
+  transform: scale(0.985);
+  background-color: var(--card-hover);
+  border-color: var(--border-hover);
 }
 
-.project-card:hover {
-  border-color: rgba(56, 189, 248, 0.45);
-  background-color: var(--card-hover);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.45);
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover::before {
+    opacity: 1;
+  }
+
+  .project-card:hover {
+    border-color: rgba(56, 189, 248, 0.45);
+    background-color: var(--card-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.45);
+  }
+
+  .project-card:hover .project-icon {
+    transform: scale(1.08);
+  }
+
+  .project-card:hover .project-overview-link {
+    color: var(--accent-hover);
+    transform: translateX(4px);
+  }
 }
 
 .project-card:focus-within {
@@ -211,10 +229,6 @@ h2::before {
   display: block;
   border-radius: 5px;
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.project-card:hover .project-icon {
-  transform: scale(1.08);
 }
 
 .project-title {
@@ -257,11 +271,6 @@ h2::before {
   align-items: center;
 }
 
-.project-card:hover .project-overview-link {
-  color: var(--accent-hover);
-  transform: translateX(4px);
-}
-
 .project-links {
   position: relative;
   z-index: 3;
@@ -288,6 +297,13 @@ h2::before {
 
 .project-links a.github-link {
   color: var(--text-dim);
+  min-width: 36px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  touch-action: manipulation;
 }
 
 .project-links a.github-link:hover {
@@ -331,13 +347,20 @@ h2::before {
   letter-spacing: 0.02em;
   display: inline-block;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  touch-action: manipulation;
 }
 
-.tag:hover {
-  transform: translateY(-2px);
-  border-color: rgba(88, 166, 255, 0.45);
-  background-color: #21262d;
-  color: #ffffff;
+@media (hover: hover) and (pointer: fine) {
+  .tag:hover {
+    transform: translateY(-2px);
+    border-color: rgba(88, 166, 255, 0.45);
+    background-color: #21262d;
+    color: #ffffff;
+  }
+}
+
+.tag:active {
+  transform: scale(0.94);
 }
 
 /* Blog / Writing Section */
@@ -359,6 +382,12 @@ h2::before {
   border-radius: 6px;
   border: 1px solid transparent;
   transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+  touch-action: manipulation;
+}
+
+.post-item:active {
+  transform: scale(0.985);
+  background-color: var(--card-bg);
 }
 
 /* Mouse-following spotlight overlay for post items */
@@ -378,15 +407,21 @@ h2::before {
   z-index: 0;
 }
 
-.post-item:hover::before {
-  opacity: 1;
-}
+@media (hover: hover) and (pointer: fine) {
+  .post-item:hover::before {
+    opacity: 1;
+  }
 
-.post-item:hover {
-  background-color: var(--card-bg);
-  border-color: var(--border);
-  transform: translateX(4px);
-  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.3);
+  .post-item:hover {
+    background-color: var(--card-bg);
+    border-color: var(--border);
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.3);
+  }
+
+  .post-item:hover .post-title-link {
+    color: var(--accent);
+  }
 }
 
 .post-top {
@@ -403,10 +438,6 @@ h2::before {
   font-weight: 600;
   font-size: 1.05rem;
   color: #ffffff;
-}
-
-.post-item:hover .post-title-link {
-  color: var(--accent);
 }
 
 .post-date {
@@ -458,12 +489,15 @@ h2::before {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+  touch-action: manipulation;
 }
 
-.copy-btn:hover {
-  background-color: var(--border);
-  color: #ffffff;
-  transform: translateY(-1px);
+@media (hover: hover) and (pointer: fine) {
+  .copy-btn:hover {
+    background-color: var(--border);
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
 }
 
 .copy-btn:active {
@@ -489,8 +523,8 @@ h2::before {
   margin-bottom: 0.75rem;
 }
 
-.prose h1 { font-size: 1.75rem; }
-.prose h2 { font-size: 1.35rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
+.prose h1 { font-size: clamp(1.4rem, 1.15rem + 1.3vw, 1.75rem); }
+.prose h2 { font-size: clamp(1.15rem, 1.02rem + 0.7vw, 1.35rem); border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
 .prose h3 { font-size: 1.15rem; }
 
 .prose p {
@@ -527,6 +561,7 @@ h2::before {
   border-radius: 6px;
   padding: 1.25rem;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   margin-bottom: 1.5rem;
   font-size: 0.88rem;
 }
@@ -550,13 +585,16 @@ h2::before {
   transition: all 0.15s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
   user-select: none;
   z-index: 5;
+  touch-action: manipulation;
 }
 
-.code-copy-btn:hover {
-  background: var(--border);
-  color: #ffffff;
-  border-color: #484f58;
-  transform: translateY(-1px);
+@media (hover: hover) and (pointer: fine) {
+  .code-copy-btn:hover {
+    background: var(--border);
+    color: #ffffff;
+    border-color: #484f58;
+    transform: translateY(-1px);
+  }
 }
 
 .code-copy-btn:active {
@@ -589,6 +627,60 @@ h2::before {
   color: var(--text-muted);
   margin-bottom: 1.25rem;
   font-style: italic;
+}
+
+/* Responsive Data Tables in Prose */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.75rem 0;
+  font-size: 0.88rem;
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #12161c;
+}
+
+.prose thead {
+  background-color: #161b22;
+  border-bottom: 1px solid var(--border);
+}
+
+.prose th {
+  color: #ffffff;
+  font-weight: 600;
+  text-align: left;
+  padding: 0.65rem 0.95rem;
+  border-right: 1px solid rgba(56, 60, 68, 0.4);
+  white-space: nowrap;
+}
+
+.prose th:last-child {
+  border-right: none;
+}
+
+.prose td {
+  padding: 0.6rem 0.95rem;
+  border-top: 1px solid rgba(56, 60, 68, 0.3);
+  border-right: 1px solid rgba(56, 60, 68, 0.3);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.prose td:last-child {
+  border-right: none;
+}
+
+.prose tr:nth-child(even) td {
+  background-color: rgba(255, 255, 255, 0.015);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .prose tr:hover td {
+    background-color: rgba(88, 166, 255, 0.04);
+  }
 }
 
 /* Responsive Math Formatting */
@@ -625,7 +717,7 @@ h2::before {
 }
 
 .project-hero-title {
-  font-size: 1.85rem;
+  font-size: clamp(1.45rem, 1.2rem + 1.4vw, 1.85rem);
   font-weight: 700;
   color: #ffffff !important;
   margin-bottom: 0.4rem;
@@ -658,13 +750,16 @@ h2::before {
   font-size: 0.85rem;
   font-weight: 500;
   text-decoration: none;
+  touch-action: manipulation;
   transition: background-color 0.15s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.btn-primary:hover {
-  background-color: #2ea043;
-  color: #ffffff;
-  transform: translateY(-1px);
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover {
+    background-color: #2ea043;
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
 }
 
 .btn-primary:active {
@@ -683,13 +778,16 @@ h2::before {
   font-size: 0.85rem;
   font-weight: 500;
   text-decoration: none;
+  touch-action: manipulation;
   transition: all 0.15s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.btn-secondary:hover {
-  background-color: var(--border);
-  color: #ffffff;
-  transform: translateY(-1px);
+@media (hover: hover) and (pointer: fine) {
+  .btn-secondary:hover {
+    background-color: var(--border);
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
 }
 
 .btn-secondary:active {
@@ -802,7 +900,8 @@ h2::before {
 }
 
 .demo-drawer-summary {
-  padding: 0.7rem 1rem;
+  padding: 0.85rem 1rem;
+  min-height: 48px;
   background: #161b22;
   cursor: pointer;
   display: flex;
@@ -814,10 +913,18 @@ h2::before {
   color: #ffffff;
   font-weight: 600;
   list-style: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: background 0.15s ease;
 }
 
-.demo-drawer-summary:hover {
+@media (hover: hover) and (pointer: fine) {
+  .demo-drawer-summary:hover {
+    background: #1c2128;
+  }
+}
+
+.demo-drawer-summary:active {
   background: #1c2128;
 }
 
@@ -837,7 +944,7 @@ h2::before {
   color: var(--accent);
   background: rgba(56, 189, 248, 0.1);
   border: 1px solid rgba(56, 189, 248, 0.25);
-  padding: 0.15rem 0.45rem;
+  padding: 0.2rem 0.55rem;
   border-radius: 4px;
 }
 
@@ -850,9 +957,95 @@ h2::before {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    gap: 1.25rem;
   }
   .project-hero-actions {
     justify-content: center;
+    width: 100%;
+  }
+  .demo-drawer-summary {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.85rem 0.85rem;
+  }
+  .demo-badge {
+    align-self: flex-start;
+  }
+  .demo-drawer-content {
+    padding: 0.85rem 0.65rem 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 1.5rem 1rem 3.5rem;
+    font-size: 0.95rem;
+  }
+  .project-card {
+    padding: 1.1rem 1.15rem;
+  }
+  .post-item {
+    padding: 0.75rem 0.85rem;
+  }
+  .prose pre {
+    padding: 1rem 0.85rem;
+    font-size: 0.8rem;
+  }
+  .code-copy-btn {
+    top: 0.35rem;
+    right: 0.35rem;
+  }
+  .project-hero-actions .btn-primary,
+  .project-hero-actions .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+  .breadcrumb-nav {
+    font-size: 0.82rem;
+  }
+  .project-bottom-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .other-projects-links {
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+}
+
+@media (pointer: coarse) {
+  .copy-btn {
+    min-height: 38px;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.82rem;
+  }
+
+  .code-copy-btn {
+    min-height: 36px;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.78rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    min-height: 42px;
+    padding: 0.55rem 1.1rem;
+    font-size: 0.88rem;
+  }
+
+  .project-overview-link {
+    min-height: 36px;
+  }
+
+  .tag {
+    padding: 0.25rem 0.65rem;
+    font-size: 0.78rem;
+  }
+
+  .breadcrumb-nav a {
+    min-height: 36px;
   }
 }
 

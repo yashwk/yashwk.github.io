@@ -13,8 +13,8 @@
     </div>
     <div class="terminal-controls-top">
       <button class="cockpit-btn" id="cockpit-toggle-btn" type="button" aria-label="Play or Pause Simulation">
-        <span class="btn-icon" id="cockpit-play-icon">⏸</span>
-        <span id="cockpit-play-text">Pause</span>
+        <span class="btn-icon" id="cockpit-play-icon">▶</span>
+        <span id="cockpit-play-text">Start</span>
       </button>
       <button class="cockpit-btn" id="cockpit-reset-btn" type="button" aria-label="Restart Simulation">
         ↺ Reset
@@ -33,7 +33,7 @@
   <div class="terminal-footer">
     <span class="terminal-status-indicator">
       <span class="pulse-indicator"></span>
-      <span id="cockpit-status-text">RUNNING (1.0x Realtime Pacing)</span>
+      <span id="cockpit-status-text">STANDBY (Click Start to Run)</span>
     </span>
     <span class="terminal-meta-text">
       Engine Truth: 1 kHz (dt = 0.001s) | WGS84 ECEF | RK4
@@ -100,19 +100,37 @@
   color: var(--text);
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  padding: 0.2rem 0.55rem;
+  padding: 0.25rem 0.6rem;
+  min-height: 32px;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.15s ease;
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.cockpit-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
-  border-color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .cockpit-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border-color: var(--accent);
+  }
+}
+
+.cockpit-btn:active {
+  transform: scale(0.96);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+@media (pointer: coarse) {
+  .cockpit-btn {
+    min-height: 40px;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+  }
 }
 
 .cockpit-backend-btn {
@@ -121,9 +139,10 @@
 }
 
 .terminal-body {
-  padding: 1rem 1.25rem;
+  padding: 0.85rem 1rem;
   background: #090d13;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .terminal-output {
@@ -135,6 +154,23 @@
   font-size: 0.82rem;
   line-height: 1.45;
   white-space: pre;
+}
+
+@media (max-width: 600px) {
+  .terminal-window-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+  .terminal-controls-top {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  .terminal-output {
+    font-size: 0.72rem;
+  }
 }
 
 .terminal-footer {
@@ -176,7 +212,7 @@
 
 <script is:inline>
 (() => {
-  let isRunning = true;
+  let isRunning = false;
   let backend = 'vulkan';
   let simTime = 0.0;
   let wallTime = 0.0;
